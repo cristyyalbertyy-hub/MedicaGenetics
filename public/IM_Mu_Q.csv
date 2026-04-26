@@ -1,0 +1,50 @@
+What term describes traits where variation is caused by the combined effects of multiple genes?,Polygenic
+Traits resulting from the interaction of multiple genes and environmental factors are termed _____.,Multifactorial
+"What type of traits, such as blood pressure, are measured on a continuous numerical scale?",Quantitative traits
+"In a population, quantitative traits influenced by many additive genetic and environmental factors typically follow a _____ distribution.",Normal (or bell-shaped)
+What model explains the inheritance of multifactorial diseases that are either present or absent rather than continuous?,The threshold model
+"In the threshold model, the range of genetic and environmental risk factors in a population is called the _____.",Liability distribution
+What must be crossed for an individual to express a multifactorial disease according to the threshold model?,The threshold of liability
+How does the recurrence risk for multifactorial diseases change if more than one family member is affected?,The recurrence risk increases.
+"For single-gene diseases, the recurrence risk remains the same regardless of the number of affected siblings; how does this contrast with multifactorial diseases?","In multifactorial diseases, the risk increases as more siblings are affected."
+How does the severity of a proband's disease expression affect the recurrence risk in multifactorial inheritance?,Greater severity in the proband leads to a higher recurrence risk for relatives.
+"In multifactorial disorders with sex-specific thresholds, which sex's relatives are at higher risk if that sex is less commonly affected?",The relatives of the less commonly affected sex have a higher recurrence risk.
+"If the prevalence of a multifactorial disease in a population is $f$, what is the approximate risk for offspring and siblings of probands?",$\sqrt{f}$
+How does the recurrence risk for multifactorial diseases change as the degree of relationship to the proband becomes more remote?,The recurrence risk decreases much more rapidly than for single-gene diseases.
+What type of risks are derived from direct observation of data from large series of families for multifactorial diseases?,Empirical risks
+Give an example of a congenital malformation that follows the multifactorial threshold model.,Cleft lip with or without cleft palate
+Which multifactorial adult disease affects approximately $1/10$ of Americans older than 65 years?,Alzheimer's disease
+What is the general prevalence of schizophrenia in the population?,Approximately $1/100$
+What two types of studies are primarily used to disentangle the effects of 'nature' and 'nurture' in multifactorial traits?,Twin studies and adoption studies
+What does a heritability estimate of $70\%$ for Autism Spectrum Disorder suggest?,That $70\%$ of the variation in the trait is due to genetic factors.
+How does 'locus heterogeneity' differ from 'multifactorial inheritance'?,"Locus heterogeneity involves single mutations at different loci, while multifactorial inheritance involves many genes acting simultaneously."
+What is a 'major gene' in the context of multifactorial inheritance?,A single gene with a large effect that acts alongside a multifactorial background of smaller effects.
+"In the threshold model, individuals on the 'low end' of the liability distribution have _____.",Few alleles or environmental factors that cause the disease.
+The loci underlying variation in a quantitative multifactorial trait are termed _____.,Quantitative trait loci (QTLs)
+"Which specific congenital defect has a sibling recurrence risk of $3\%$ with one affected sibling, increasing to $10\%$ with two?",Ventricular septal defect (VSD)
+Why do recurrence risks for multifactorial diseases vary between different populations?,Because allele frequencies and environmental factors differ between populations.
+What are 'modifier genes'?,Genes whose products interact with a specific disease-causing gene to influence its expression.
+Which psychiatric disorder shows marked familial aggregation and is linked to genes encoding neurotransmitters and ion channels?,Bipolar disorder
+"According to the continuum of genetic vs. environmental influence, where does heart disease lie?","In the middle, influenced by varying degrees of both genetics and environment."
+What is the term for the interaction of a specific genotype with non-genetic factors to produce an observable trait?,Genotype-environment interaction
+"In pyloric stenosis, which sex has a lower threshold of liability, making them more commonly affected?",Males
+Why is the sibling recurrence risk for Autism Spectrum Disorder higher if the affected proband is female?,"Females have a higher threshold of liability, so an affected female implies a higher genetic load in the family."
+"What environmental component is absolutely required for the development of alcoholism, regardless of genetic susceptibility?",Exposure to/consumption of alcohol
+What is the approximate prevalence of Type 1 and Type 2 diabetes combined?,Approximately $1/10$
+Name one multifactorial adult disease that frequently has an earlier age of onset in familial cases.,Breast cancer (or Alzheimer's disease/heart disease)
+"True or False: Large, well-controlled studies have found a relationship between Autism Spectrum Disorder and the MMR vaccination.",False
+What is the primary goal of genome-wide association studies (GWAS) in the context of multifactorial traits?,To identify specific loci or alleles associated with the trait or disease risk.
+Which congenital malformation has a prevalence of roughly $1/1000$ and is more common in males?,Club foot (talipes equinovarus)
+Why is it difficult to identify the specific genes responsible for multifactorial disorders compared to Mendelian ones?,Because each individual gene typically has only a small effect on the overall risk.
+"In twin studies, what is being compared to estimate heritability?",The concordance rates between monozygotic (identical) twins and dizygotic (fraternal) twins.
+"What describes a situation where an individual carries two different alleles at a locus, which can hide recessive alleles in the phenotype?",Heterozygosity
+"In the context of height as a multifactorial trait, what explains the overlap in height between different genotypes like $Aa$ and $AA$?",The influence of the multifactorial background (other genes and environment).
+Neural tube defects like spina bifida typically have a general population prevalence of _____.,$1/200$ to $1/1000$
+What is the recurrence risk for first-degree relatives of a proband with cleft lip/palate if the population prevalence is $0.001$?,$0.04$ (or $4\%$)
+How does the recurrence risk for first-degree relatives compare to third-degree relatives in multifactorial inheritance?,The risk is significantly higher for first-degree relatives and drops sharply for third-degree relatives.
+Which adult disorder has a population prevalence of $1/3$ to $1/5$?,Heart disease (or stroke)
+What specific genetic abnormality is found in $1\%-3\%$ of Autism Spectrum Disorder cases?,Maternally transmitted duplication of chromosome $15q11-q13$
+How do adoption studies help identify genetic contributions to multifactorial diseases?,By comparing the disease rates of adopted children with their biological parents versus their adoptive parents.
+True or False: Individual genes underlying a multifactorial trait still follow Mendelian principles of segregation.,True
+"What term describes the process of development of a cell, organ, or organism, which can be disrupted in multifactorial congenital malformations?",Morphogenesis
+"In multifactorial inheritance, what does a negative family history imply about the presence of a genetic disorder?","It does not rule it out, as multifactorial conditions often have low recurrence risks and sporadic occurrences."

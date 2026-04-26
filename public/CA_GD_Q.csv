@@ -1,0 +1,75 @@
+What is the definition of 'genetic testing'?,"The analysis of chromosomes, DNA, RNA, or proteins to detect abnormalities causing a genetic disease."
+What are the three primary clinical indications for genetic testing?,"Prenatal diagnosis, heterozygote carrier detection, and presymptomatic diagnosis."
+Define 'presymptomatic diagnosis'.,Identifying a disease-causing gene in an individual before they develop clinical symptoms.
+What is the primary goal of population genetic screening?,The early recognition of a disorder to prevent or reverse the disease process.
+Why must a condition be 'serious and relatively common' to justify a population screening programme?,To ensure that the clinical benefits derived from the programme justify the associated costs.
+Which specific group of disorders is the focus of newborn screening in the UK and Europe?,Inborn errors of metabolism.
+For which population is Tay–Sachs disease heterozygote screening typically performed?,The Ashkenazi Jewish population.
+Carrier screening for sickle-cell anaemia is commonly targeted at the _____ population.,African-American
+What is the fundamental difference between direct and indirect genetic diagnosis?,"Direct diagnosis assays the mutation itself, while indirect diagnosis uses linked markers."
+Which form of genetic diagnosis uses markers like SNPs or STRs to track a disease gene through a family?,Linkage analysis (indirect diagnosis).
+What is a major advantage of direct mutation analysis over linkage analysis?,It does not require family information as the mutation is viewed directly in the individual.
+Which direct testing method is used to detect chromosome deletions in Williams syndrome?,Fluorescence in situ hybridisation (FISH).
+What is the primary clinical application of array comparative genomic hybridisation (array CGH)?,Detecting copy number variants such as microdeletions and microduplications.
+Which method is specifically used to detect the single-base mutation responsible for sickle-cell anaemia?,Allele-specific oligonucleotide (ASO) hybridisation.
+Why is the length of an ASO probe restricted to approximately 18 to 20 nucleotides?,To ensure the probe is unique in the genome and sensitive to a single-base mismatch.
+What condition must be met for ASO hybridisation to be a viable diagnostic approach?,The exact DNA sequence of the disease-causing mutation must be known.
+Which direct testing method is standard for identifying mutations in familial breast and ovarian cancer?,Sanger DNA sequencing.
+What is the purpose of using targeted disease-sequencing panels in clinical practice?,"To screen for multiple mutations associated with a specific phenotype, such as familial cardiomyopathy."
+When is whole-exome or whole-genome sequencing indicated in a clinical setting?,For undiagnosed conditions or diseases of uncertain etiology.
+Linkage analysis is a form of _____ genetic diagnosis.,indirect
+"In linkage analysis, what biological event can lead to a diagnostic error?",Recombination between the marker and the disease-causing mutation.
+Define 'precision medicine'.,The use of an individual's unique genetic and environmental factors to predict disease risk and treatment response.
+How can genomic information facilitate more effective drug prescriptions?,By identifying polymorphisms that influence the rate of drug metabolism.
+What is a primary clinical benefit of pharmacogenetic testing?,Reducing the incidence of serious drug-related side effects.
+What does 'incomplete penetrance' imply for the interpretation of genetic test results?,The presence of a mutation does not guarantee that the individual will develop the disease.
+What is the likelihood that a woman with a $BRCA1$ mutation will develop breast cancer?,Approximately 50% to 80%.
+Which biological phenomenon can complicate the accuracy of cytogenetic diagnosis?,Mosaicism.
+What is a major limitation of many common mutation panels used for cystic fibrosis screening?,They lack sensitivity because they only test for the most frequent mutations.
+What is the principal aim of prenatal diagnosis?,To provide at-risk families with information to make informed reproductive choices.
+Which invasive prenatal diagnostic method involves sampling the placenta?,Chorionic villus sampling (CVS).
+Define 'preimplantation genetic diagnosis' (PGD).,The genetic testing of embryos created through assisted reproduction before they are implanted.
+"According to Jorde, what distinguishes 'genomic' medicine from 'genetic' medicine?",Genomic medicine assesses many genes simultaneously rather than individual genetic variants.
+How are gene-expression profiles used to distinguish different types of cancers?,By estimating mRNA transcription levels to identify patterns of oncogene or tumour suppressor activity.
+What is the first essential step in the process of clinical genetic care?,Establishing an accurate diagnosis of the patient's condition.
+What does the term 'uninformative mating' refer to in linkage analysis?,A situation where markers cannot be used to distinguish between the two chromosomes of a parent.
+Under what condition will an ASO probe fail to hybridise with a patient's DNA?,If there is even a single-base mismatch under stringent hybridisation conditions.
+Which method is used to detect repeat expansions in disorders like Fragile X syndrome?,Southern blotting or multiplex ligation-dependent probe amplification (MLPA).
+What is a 'variant of unknown significance' (VUS) in the context of whole-genome sequencing?,A genetic change whose association with a disease is not yet understood.
+Carrier screening for thalassaemias is typically focused on _____ ethnic groups.,at-risk
+Why is 'natural history' knowledge important for population screening programmes?,It allows clinicians to predict the progression and severity of the disease in screened individuals.
+What is the primary disadvantage of linkage analysis compared to direct diagnosis?,The requirement for DNA samples from multiple family members to establish linkage phase.
+How does RNA sequencing contribute to precision care in oncology?,It allows for the monitoring of therapeutic responses by measuring gene expression levels.
+What is 'incidental finding' in the context of clinical genomic sequencing?,Identifying a mutation for a disease unrelated to the patient's original reason for testing.
+Which testing method is ideal for detecting a known microdeletion in a specific chromosome region?,Fluorescence in situ hybridisation (FISH).
+Direct genetic diagnosis is possible if the number of disease-causing mutations is _____.,limited
+"In ASO hybridisation, DNA from a homozygous individual for a mutation will hybridise with _____.",only the mutated sequence probe.
+What is the sibling recurrence risk for a disease with autosomal recessive inheritance?,25%.
+Why does a negative family history not exclude the presence of a genetic disease?,"Due to factors like new mutations, recessive inheritance, or low recurrence risks of chromosomal syndromes."
+What percentage of achondroplasia cases are caused by new mutations?,80%.
+What is the core focus of 'clinical genetics' as a specialty?,"The direct clinical care, diagnosis, and management of persons with genetic diseases."
+What role do genetic advocacy groups play in the delivery of genetic services?,"They provide support, resources, and accurate information to affected families."
+Which online resource provides highly detailed management guidelines for specific genetic conditions?,GeneReviews.
+What determines the recurrence risk in multifactorial disorders?,Empirical figures based on population data.
+Genetic testing for drug sensitivity often utilizes _____ microarrays.,SNP
+What is the study of abnormal physical development called in medical genetics?,Dysmorphology.
+Which direct diagnosis method can uncover multiple different mutations in a single gene simultaneously?,Sanger DNA sequencing (or whole-exome sequencing).
+ASO probes are typically _____ nucleotides in length.,18 to 20
+What is the purpose of percutaneous umbilical blood sampling (PUBS)?,To obtain foetal blood for rapid genetic diagnosis or treatment.
+"Diagnosis of cystic fibrosis often relies on identifying the most common mutations, such as the _____ mutation.",$\Delta F508$ (Note: implied by clinical context in Jorde's references to common CF mutations).
+"In a clinical setting, how can whole-genome data be used beyond disease diagnosis?",For forensic identification or screening for inborn errors in newborns.
+What is a major limitation regarding the 'severity' of a disease when a mutation is detected?,Detection of a mutation often reveals little about the specific severity or age of onset.
+Which method is specifically used for detecting uniparental disomy?,SNP microarrays.
+Targeted sequencing panels for familial colorectal cancer typically look for mutations in _____ genes.,HNPCC (or FAP)
+What prevents universal presymptomatic screening from being practical for most genetic diseases?,The fact that most genetic diseases are relatively uncommon in the general population.
+Which technique allows the identification of very small chromosome deletions that are invisible under a microscope?,Array comparative genomic hybridisation (array CGH).
+What is the primary benefit of recombinant clotting factor VIII?,It provides a safe and effective treatment for individuals with haemophilia A.
+Define 'genome-wide association studies' (GWAS).,Studies comparing allele frequencies at many loci between disease cases and unaffected controls.
+What information does a pedigree provide during a clinical genetic evaluation?,Documentation of family relationships and the history of the condition within the family.
+Genetic screening for $\alpha_1$-antitrypsin deficiency is considered feasible because the disease is caused by a _____ number of mutations.,limited
+Why is 'linkage phase' critical in indirect genetic diagnosis?,It determines which specific marker allele is travelling with the disease-causing mutation in a family.
+Which method is most effective for diagnosing Prader–Willi syndrome?,FISH (or SNP microarrays).
+How can identifying mutations in familial colorectal cancer lead to metastasis prevention?,By allowing for early and frequent screening to detect tumours before they spread.
+"In direct genetic diagnosis, why is recombination not a concern?",Because the assay targets the mutation itself rather than a linked marker.
+What is the primary role of a 'genetic counselor' in a clinical team?,"To provide patient education, psychosocial support, and risk assessment for genetic testing."
+What is the totality of an organism's DNA called?,The genome.

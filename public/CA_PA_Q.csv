@@ -1,0 +1,60 @@
+"In a pedigree diagram, what gender is represented by a square symbol?",Male
+"In a pedigree diagram, what gender is represented by a circle symbol?",Female
+What does a diamond symbol represent in standard pedigree notation?,An individual whose sex is not specified.
+"In a pedigree, what does a completely darkened square or circle indicate?",An individual affected by the disease or trait being studied.
+"What is the specific term for the first person diagnosed with a disease in a pedigree, often indicated by an arrow?",Proband (or index case/propositus).
+"In pedigree notation, what is indicated by a double horizontal bar connecting a male and female?",A consanguineous mating (mating between blood relatives).
+How are different generations typically identified in a pedigree diagram?,"Using Roman numerals (e.g., I, II, III)."
+What does a diagonal line drawn through a pedigree symbol signify?,The individual is deceased.
+"In a pedigree, how are identical (monozygotic) twins distinguished from fraternal twins?",Identical twins are connected by an additional horizontal bar between the diagonal lines branching from the parents.
+What type of inheritance is suggested by a 'vertical transmission' pattern where the disease appears in every generation?,Autosomal dominant inheritance.
+"If an individual is affected by an autosomal dominant disorder, what is the probability that each of their children will inherit the disease allele?",$0.5$ (or $50\%$).
+True or False: Father-to-son transmission of a disease gene rules out X-linked inheritance.,True
+What term describes the probability that future children of a couple will be affected by a specific genetic disease?,Recurrence risk.
+"In autosomal dominant inheritance, what is the expected recurrence risk for the offspring of two unaffected parents?",$0$ (assuming no new mutations or reduced penetrance).
+The presence of a dot inside a circle in an X-linked recessive pedigree typically represents a _____.,Heterozygous carrier female.
+Which inheritance pattern is most likely if a rare disease affects significantly more males than females and never shows father-to-son transmission?,X-linked recessive inheritance.
+What is the definition of consanguinity?,Mating between individuals who are related by blood (second cousins or closer).
+Consanguineous unions significantly increase the risk of offspring being affected by which type of genetic disorder?,Autosomal recessive disorders.
+What is the 'coefficient of relationship' between a parent and their biological child?,$1/2$ (sharing half of their genes).
+What is the coefficient of relationship for second cousins?,$1/32$
+Concept: Pleiotropy,"Definition: A single gene exerting effects on multiple, seemingly unrelated aspects of physiology or anatomy."
+"Which autosomal dominant condition is a classic example of pleiotropy, affecting the ocular, skeletal, and cardiovascular systems?",Marfan syndrome.
+"In linkage analysis, what is a 'marker'?",A DNA polymorphism used to track the transmission of a specific chromosome segment through a family.
+What does the 'LOD score' measure in medical genetics?,The statistical likelihood of linkage between two loci at a specific recombination frequency compared to non-linkage.
+What minimum LOD score is traditionally required to establish significant evidence for linkage between two loci?,$3.0$ (representing $1000:1$ odds in favour of linkage).
+A LOD score of _____ or less is generally considered sufficient to exclude linkage between two loci.,$-2.0$
+"In genetics, what is meant by the term 'linkage phase'?",The knowledge of which alleles at different loci are located on the same physical chromosome copy.
+What value of the recombination frequency ($\theta$) indicates that two loci are assorting independently and are not linked?,$\theta = 0.5$
+What is the primary disadvantage of 'indirect' genetic diagnosis using linkage analysis compared to direct mutation analysis?,It requires DNA from multiple family members and is subject to error from recombination.
+Term: Haplotype,Definition: A specific combination of alleles at multiple linked loci on a single chromosome that tend to be inherited together.
+What is an 'uninformative mating' in the context of linkage analysis?,A mating where it is impossible to distinguish which parental chromosome was transmitted to the offspring based on marker genotypes.
+"The _____ method is an alternative to traditional linkage analysis for multifactorial disorders, looking for increased allele sharing between affected siblings.",Affected sib-pair
+What does 'penetrance' refer to in pedigree analysis?,The probability that an individual with a specific genotype will express the corresponding phenotype.
+"Huntington disease is a classic example of _____ penetrance, where the probability of symptoms increases as the individual gets older.",Age-dependent
+"In a pedigree, how are offspring typically listed under their parents?","In birth order, from left to right."
+What is the coefficient of relationship between first cousins?,$1/8$
+"Direct diagnosis of a genetic disease involves looking for the _____ itself, rather than linked markers.",Disease-causing mutation
+True or False: Mendelian ratios (like $3:1$) are easily observed in individual human families due to their large size.,False (Human families are usually too small to provide perfect Mendelian ratios).
+"In linkage analysis, the recombination frequency ($\theta$) is calculated as the number of _____ divided by the total number of informative meioses.",Recombinants
+Which technique is commonly used to detect deletions or duplications of chromosome regions directly in a patient?,Array comparative genomic hybridisation (array CGH).
+What does a horizontal line connecting two symbols in an Alberts-style pedigree signify if it is coloured red?,A mating between blood relatives (consanguinity).
+"In genetic studies, what is a 'genome scan'?",Linkage analysis performed with a large series of marker polymorphisms that span the entire genome.
+Why is 'direct diagnosis' generally preferred over 'indirect diagnosis' when the mutation is known?,It does not require family information and is not susceptible to recombination errors.
+What term describes the situation where a single mutation results in multiple clinical features across different organ systems?,Pleiotropy
+The probability that a parent and their offspring share a given DNA sequence is _____.,$1/2$
+"If a man is a known carrier of a rare autosomal recessive disease, the probability that his first cousin is also a carrier for the same allele is _____.",$1/8$
+"In pedigree analysis, what does a small symbol with the notation 'SB' and a week number signify?",A stillbirth at the specified gestational age.
+Which type of DNA markers are often used in linkage analysis because they have many alleles and are highly polymorphic?,Short Tandem Repeats (STRs).
+Concept: Haplotype Block,Definition: Combinations of polymorphisms or markers that are inherited as a unit with little genetic rearrangement over generations.
+"True or False: In X-linked recessive inheritance, an affected father can transmit the disease gene to his son.",False
+"In a pedigree for an autosomal dominant trait, what happens to the disease transmission if two unaffected individuals mate?",The transmission stops (none of the children will have the trait).
+What is the formula for the LOD score ($Z$)?,$Z = \log_{10} \left( \frac{\text{Likelihood of linkage at } \theta}{\text{Likelihood of non-linkage at } \theta = 0.5} \right)$
+Geneticists follow the inheritance of traits in humans by preparing _____ that show the phenotype of each family member.,Pedigrees
+"In autosomal dominant inheritance, males and females exhibit the trait in approximately _____ ratios.",Equal
+What is the risk to a child of inheriting a lethal recessive allele if both parents are carriers?,$25\%$ (or $1/4$).
+The term 'propositus' is synonymous with which other pedigree term?,Proband (or index case).
+"In linkage analysis, if five children all inherit the expected marker allele alongside the disease gene, the likelihood ratio for linkage at $\theta = 0.0$ vs $\theta = 0.5$ is _____.",$32$
+What is the primary purpose of using markers in medical genetics?,To determine which member of a chromosome pair is being transmitted by a parent to an offspring.
+How is a 'first cousin once removed' defined in genetic relationships?,The offspring of one's first cousin.
+Term: Reduced Penetrance,Definition: When an individual inherits a disease-causing genotype but does not express the associated phenotype.

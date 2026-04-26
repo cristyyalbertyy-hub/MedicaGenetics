@@ -1,0 +1,77 @@
+"In most multicellular organisms, what is the primary mode of mitochondrial inheritance?",Maternal inheritance (uniparental).
+Why is mitochondrial DNA ($mtDNA$) inherited exclusively through the maternal line in humans?,Sperm mitochondria are either not incorporated into the embryo or are degraded after fertilisation.
+What term describes the presence of a mixture of mutant and normal $mtDNA$ within a single cell?,Heteroplasmy.
+How does the percentage of mutant $mtDNA$ molecules typically correlate with disease severity?,A higher percentage of mutant molecules generally leads to more severe clinical expression.
+What is the approximate size of the human mitochondrial genome in base pairs?,"16,569 base pairs."
+How many protein-coding genes are found in the human mitochondrial genome?,13 genes.
+Mitochondrial $DNA$ is arranged in what physical shape?,Double-stranded circular molecule.
+Which two types of $RNA$ involved in translation are encoded by the mitochondrial genome?,Ribosomal $RNA$ ($rRNA$) and transfer $RNA$ ($tRNA$).
+How many $tRNA$ genes are contained within the human mitochondrial genome?,22 $tRNA$ genes.
+True or False: Human mitochondrial genes contain introns.,"False (unlike nuclear genes, $mtDNA$ genes contain no introns)."
+By what factor is the mutation rate of $mtDNA$ higher than that of nuclear $DNA$?,Approximately 10 times higher.
+What are two primary reasons for the high mutation rate of mitochondrial $DNA$?,A relative lack of $DNA$ repair mechanisms and damage from free oxygen radicals released during oxidative phosphorylation.
+Which organ systems are most likely to be affected by mitochondrial diseases?,"Organ systems with high $ATP$ requirements, such as the central nervous system and muscles."
+What is the 'threshold level' in the context of mitochondrial disease?,The minimum level of $ATP$ production required for a tissue to function normally before degenerating.
+What is the characteristic clinical symptom of Leber Hereditary Optic Neuropathy ($LHON$)?,Rapid loss of vision in the central visual field due to optic nerve death.
+Why do $LHON$ pedigrees usually display a clear and uniform pattern of mitochondrial inheritance?,Heteroplasmy is minimal in $LHON$.
+What does the acronym $MERRF$ stand for?,Myoclonic Epilepsy and Ragged Red Fibre disease.
+What type of mutation typically causes $MERRF$?,A single-base mutation in a mitochondrial $tRNA$ gene.
+What does the acronym $MELAS$ stand for?,"Mitochondrial Encephalomyopathy, Lactic Acidosis, and Stroke-like episodes."
+Which mitochondrial disease is caused by deletions or duplications and involves muscle weakness and heart failure?,Kearns-Sayre disease.
+"In $mtDNA$ inheritance, why can an affected father not transmit the disease to his children?",Mitochondria are only passed down from the mother via the egg.
+Approximately how many nuclear $DNA$ genes encode proteins that are transported into the mitochondria?,Approximately 1000 genes.
+What term describes the process where mitochondria are distributed randomly to daughter cells during division?,Mitotic segregation (or vegetative segregation).
+"According to the endosymbiotic theory, mitochondria are derived from what type of ancestor?",Aerobic bacteria ($\\alpha$-proteobacteria) that were engulfed by an ancestral eukaryotic cell.
+What evidence supports the bacterial origin of mitochondria regarding protein synthesis?,Mitochondrial ribosomes are sensitive to antibiotics like chloramphenicol and streptomycin.
+"Mitochondrial protein synthesis uniquely begins with which amino acid, similar to bacteria?",$N$-formylmethionine.
+"In the human mitochondrial genetic code, what does the codon $UGA$ signify?","Tryptophan ($Trp$), whereas it is a STOP codon in the universal code."
+"In the mammalian mitochondrial code, the universal isoleucine codon $AUA$ codes for which amino acid?",Methionine ($Met$).
+What is the function of the mitochondrial codons $AGA$ and $AGG$ in mammals?,"They serve as STOP codons, rather than coding for Arginine ($Arg$)."
+Which organism retains a mitochondrial genetic code that is nearly identical to the standard nuclear code?,The protozoan $Reclinomonas\\ americana$.
+What is 'relaxed codon usage' in mitochondria?,The ability of a single $tRNA$ to pair with any of the four nucleotides in the third (wobble) position.
+The non-coding region of mitochondrial $DNA$ that contains replication origins is known as the _____.,$D$-loop (control region).
+How does the size of the mitochondrial genome in yeast ($Saccharomyces\\ cerevisiae$) compare to humans?,"It is much larger, comprising about 15\% of total cellular $DNA$ in vegetative cells."
+What process involves removing a nucleus from an egg with faulty mitochondria and placing it into a donor egg with healthy mitochondria?,Mitochondrial replacement therapy.
+What is the evolutionary benefit of gene transfer from the mitochondrial genome to the nucleus?,It allows the cell to centralise genetic control while maintaining the organelle's specialized function.
+What is 'homoplasmy' in the context of mitochondrial genetics?,A state where all $mtDNA$ molecules in a cell are identical.
+Which specific $mtDNA$ mutation is found in 1\% to 2\% of individuals with type 2 diabetes mellitus?,The $MELAS$ mutation.
+"How can shorter $mtDNA$ molecules, such as those with deletions, sometimes gain a selective advantage?",They can replicate more quickly than full-length molecules.
+True or False: $mtDNA$ mutations can accumulate throughout an individual's life and contribute to ageing.,True.
+What organelle feature is the site of oxidative phosphorylation and contains the electron-transport chain?,The inner mitochondrial membrane (specifically the cristae).
+What is the 'bottleneck effect' in mitochondrial inheritance?,"A reduction in $mtDNA$ variety during oocyte development, which can lead to rapid shifts in heteroplasmy levels between generations."
+Which mitochondrial structure is a dense matrix containing enzymes for the citric acid cycle?,The mitochondrial matrix.
+Why is 'mitotic segregation' important for the phenotypic expression of mitochondrial diseases?,It can result in different daughter cells receiving vastly different proportions of mutant $mtDNA$.
+Mitochondria produce most of the cell's energy in the form of _____.,$ATP$ (Adenosine Triphosphate).
+How do mitochondria typically reproduce within a eukaryotic cell?,By fission (dividing in two).
+Which metabolic process produces most of the $ATP$ used by eukaryotic cells within the mitochondria?,Oxidative phosphorylation.
+"In heart muscle cells, why are mitochondria located close to the contractile apparatus?",To supply $ATP$ directly to the site of high energy consumption.
+What mitochondrial function involves the release of specific molecules to trigger cell death?,Regulation of apoptosis.
+Mitochondria act as a buffer for which important signalling ion?,Calcium ($Ca^{2+}$).
+What is the primary role of mitochondrial cristae?,To increase the surface area of the inner membrane for $ATP$ production.
+The internal compartment of the mitochondrion is known as the _____.,Matrix.
+Which membrane of the mitochondrion contains large aqueous pores formed by porins?,The outer membrane.
+The space between the inner and outer mitochondrial membranes is the _____.,Intermembrane space.
+Why are mitochondrial genomes described as having 'dense gene packing'?,"Nearly every nucleotide is part of a coding sequence, with very little non-coding $DNA$."
+What is the function of the $mtDNA$ origins of replication $O_H$ and $O_L$?,They serve as the start points for replicating the Heavy and Light strands of $mtDNA$.
+What occurs during mitochondrial 'fusion'?,"Individual mitochondria join together to form elongated, tubular networks."
+Which enzyme complex in the mitochondria is responsible for the final step of $ATP$ synthesis?,$ATP$ synthase.
+"In plant mitochondria, what process converts specific Cytosine ($C$) residues to Uracil ($U$)?",$RNA$ editing.
+Which inheritance pattern is observed for mitochondrial fatty acid oxidation disorders caused by nuclear genes?,Autosomal recessive.
+Pearson syndrome is characterised by infantile pancreatic insufficiency and which other condition?,Lactic acidosis.
+What clinical feature is often used to diagnose $MERRF$ in muscle biopsies?,Ragged red fibres.
+Which protein complex imports nuclear-encoded proteins across the outer mitochondrial membrane?,The $TOM$ complex (Translocase of the Outer Membrane).
+Which protein complex imports nuclear-encoded proteins across the inner mitochondrial membrane?,The $TIM$ complex (Translocase of the Inner Membrane).
+True or False: $mtDNA$ replication is closely tied to the $S$ phase of the cell cycle.,False (it occurs throughout the cell cycle and in non-dividing cells).
+What is the typical number of $mtDNA$ molecules per mitochondrion in a rat liver cell?,5 to 10 molecules.
+What is the role of mitochondrial $DNA$ polymerase $\\gamma$ ($pol\\ \\gamma$)?,It is the enzyme responsible for replicating and repairing $mtDNA$.
+Concept: $CPEO$,"Definition: Chronic Progressive External Ophthalmoplegia, a mitochondrial disorder causing weakness of the eye muscles."
+How does mitochondrial inheritance differ from Mendelian inheritance?,It is non-Mendelian because it is uniparental (maternal) and involves hundreds of copies of the genome per cell.
+Which complex of the respiratory chain is often affected in $LHON$?,Complex I ($NADH$ dehydrogenase).
+Which complex of the respiratory chain is associated with Cytochrome c oxidase deficiency?,Complex IV.
+What is the primary consequence of a mutation in the mitochondrial $tRNA^{Leu(UUR)}$ gene?,It is the most common cause of $MELAS$ syndrome.
+Which mitochondrial protein is released into the cytosol to initiate the intrinsic pathway of apoptosis?,Cytochrome c.
+Term: Mitophagy,Definition: A form of autophagy that selectively degrades damaged or surplus mitochondria.
+"In mammals, what happens to the mitochondria provided by the sperm during fertilisation?",They are specifically marked with ubiquitin and destroyed by the embryo's autophagy system.
+How many genes for ribosomal $RNA$ are found in the human mitochondrial genome?,Two genes (12S and 16S $rRNAs$).
+What does the term 'uniparental disomy' describe in general genetics?,When an individual receives two copies of a chromosome from one parent and none from the other.
+Which enzyme complex is often referred to as Complex III in the mitochondrial respiratory chain?,Ubiquinol: cytochrome c oxidoreductase.

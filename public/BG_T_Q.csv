@@ -1,0 +1,61 @@
+"What is the fundamental unit of inheritance, typically corresponding to a DNA segment coding for a protein or RNA molecule?",Gene
+The specific physical site of a gene on a chromosome is termed a _____. ,Locus
+What term describes the alternative forms of a gene at a specific locus?,Alleles
+The specific set of alleles that form the genome of an individual is the _____. ,Genotype
+"What term refers to the visible or functional characteristics of an individual, resulting from the interaction of genotype and environment?",Phenotype
+An individual possessing two identical alleles at a particular locus is a _____. ,Homozygote (or homozygous)
+What is the term for an individual who has two different alleles at a specific locus?,Heterozygote (or heterozygous)
+"Cells that contain only one copy of each chromosome, such as gametes, are described as _____. ",Haploid
+What term describes cells that possess two copies of each chromosome?,Diploid
+An allele is _____ if its phenotypic effect is the same in both the heterozygous and homozygous state.,Dominant
+What is the term for an allele whose phenotypic effect is only observed when it is present in two copies (the homozygous state)?,Recessive
+Concept: Codominant alleles,Definition: Both alleles are expressed in the heterozygous state. Example: The $A$ and $B$ alleles of the ABO blood group system.
+A change in the DNA sequence is defined as a _____. ,Mutation
+"What term refers to a gene or organism that differs from the common, naturally occurring type due to a genetic change?",Mutant
+"The standard, naturally occurring version of a gene or trait is known as the _____. ",Wild type
+What term describes the totality of an organism's DNA sequences?,Genome
+The 22 pairs of chromosomes in humans that are not involved in sex determination are called _____. ,Autosomes
+"In a clinical pedigree, the first person diagnosed with a genetic condition is referred to as the _____. ",Proband (or index case)
+A diagram that illustrates family relationships and the inheritance of traits or diseases is a _____. ,Pedigree
+What term describes an individual who has one copy of a disease-causing recessive gene but does not display the disease phenotype?,Carrier
+"What is the term for a single gene that produces multiple, seemingly unrelated phenotypic effects?",Pleiotropy
+The probability that an individual with a specific genotype will express the corresponding phenotype is known as _____. ,Penetrance
+"When the same genotype results in phenotypes of varying severity, the trait is said to show _____. ",Variable expression
+What is a 'genetic lethal mutation'?,A DNA alteration that prevents an individual from transmitting their genes to the next generation.
+A genetic _____ is a variant that occurs in at least $1\%$ of a population.,Polymorphism
+"Mating between close relatives, such as first cousins, is described as _____. ",Consanguineous
+"What term describes a gene present in only a single copy, such as X-linked genes in human males?",Hemizygous
+The existence of two or more genetically distinct cell lines in a single individual is _____. ,Mosaicism
+What is the term for twins produced by the fertilization of two different ova by two different sperm?,Dizygotic (or fraternal twins)
+Twins derived from the same single zygote are described as _____. ,Monozygotic (or identical twins)
+A situation where a $50\%$ reduction in gene expression in a heterozygote leads to an abnormal phenotype is called _____. ,Haploinsufficiency
+What term describes different mutations occurring at the same locus that result in the same disease?,Allelic heterogeneity
+The condition where mutations at different distinct loci produce the same disease phenotype is _____ heterogeneity.,Locus
+A _____ is the allelic constitution of multiple loci situated on a single chromosome.,Haplotype
+What is the name for the biological process of gamete formation?,Gametogenesis
+All cells in the body other than those belonging to the germline are known as _____ cells.,Somatic
+The lineage of reproductive cells that contributes to the formation of the next generation is the _____. ,Germline
+What is a 'gene family'?,A set of related genes that evolved from a single common ancestral gene via duplication and divergence.
+A trait or disorder attributable to a single gene is described as _____. ,Mendelian (or monogenic)
+"The first stage of mitosis or meiosis, characterized by chromosome condensation, is _____. ",Prophase
+What is a 'promoter' in genetics?,A DNA sequence located $5'$ of a gene where RNA polymerase binds to initiate transcription.
+Programmed cell death is scientifically referred to as _____. ,Apoptosis
+A group of three mRNA bases specifying a single amino acid is a _____. ,Codon
+What describes 'age-dependent penetrance'?,A phenotype that has a higher probability of manifesting as the individual's age increases.
+The presence of differing DNA sequences at a specific locus within a single cell (typically mitochondrial) is _____. ,Heteroplasmy
+"DNA molecules synthesized from mRNA, lacking the introns found in genomic DNA, are called _____. ",Complementary DNA ($cDNA$)
+What is the 'Law of Segregation'?,Mendel's principle that the two alleles for a trait separate during gamete formation and reunite during fertilization.
+A graphic representation of gene order on chromosomes based on recombination frequency is a genetic _____. ,Map
+"The study of genes, heredity, and the variation that causes differences between organisms is _____. ",Genetics
+What is 'genomic instability'?,A condition characterized by a substantial increase in the rate of mutations throughout an organism's genome.
+A substance that causes a change in DNA sequence is a _____. ,Mutagen
+What term describes a group of cells all derived from the same single ancestral cell?,Monoclonal
+The exchange of genes between distinct populations is termed gene _____. ,Flow
+"In a population, the fraction of chromosomes that contain a specific allele is the gene _____. ",Frequency
+What is 'genetic drift'?,"An evolutionary process where gene frequencies fluctuate randomly between generations, notably in small populations."
+The equilibrium relationship between gene frequencies and genotype frequencies in populations is the _____. ,Hardy-Weinberg principle
+The fraction of individuals in a population that carry a specific set of alleles at a locus is the _____ frequency.,Genotype
+What term describes the appearance of an autosomal recessive trait in a pedigree that mimics dominant inheritance?,Quasidominant
+"A person known to possess a disease-causing gene based on pedigree evidence, regardless of their own phenotype, is an _____ carrier.",Obligate
+The tendency for alleles at loci located close together on the same chromosome to be inherited together is _____. ,Linkage
+A 'nonsense mutation' is one that results in the premature formation of a _____ codon.,Stop (or termination)

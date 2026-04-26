@@ -1,0 +1,61 @@
+What is the primary objective of medical genetics in clinical practice?,"The application of genetics to medical practice, including studies of disease inheritance, mapping, and molecular mechanisms."
+"In medical genetics, what is the specific term for the insertion of normal genes into patients to correct genetic disease?",Gene therapy.
+"What clinical process involves communicating information regarding risks, prognoses, and treatments to patients and families?",Genetic counselling.
+What is the approximate lifetime prevalence of autosomal dominant disorders per $1000$ persons?,$3$ to $9.5$.
+"According to population data, what is the estimated lifetime prevalence of chromosome disorders per $1000$ persons?",$6$ to $9$.
+What percentage of the population is likely to be diagnosed with a recognisable genetic disease at some point in life?,$3\%$ to $7\%$.
+Which parental factor is strongly correlated with the probability of transmitting a single-gene mutation like Marfan syndrome?,Advanced paternal age.
+"In probability theory, which rule is used to estimate the likelihood that two independent events will occur together?",The multiplication rule.
+Which probability rule is applied to determine the likelihood that one event or another will occur?,The addition rule.
+What is the definition of genotype frequency in population genetics?,The proportion of individuals in a population who carry a specific genotype.
+"In the Hardy–Weinberg principle, if the frequency of two alleles is $p$ and $q$, what equation represents the genotype frequencies?",$p^2 + 2pq + q^2 = 1$.
+"In the Hardy–Weinberg equation for a recessive disease, what does $q^2$ typically represent?",The prevalence of the disease in the population.
+"If the prevalence of cystic fibrosis ($q^2$) is $1/2500$, what is the frequency of the disease allele ($q$)?",$1/50$ (or $0.02$).
+"For a rare recessive disease where $p \approx 1.0$, how is the carrier frequency ($2pq$) simplified for calculation?",It is estimated as $2q$.
+What term describes the presence of more than one genetically distinct cell line in a person's body?,Mosaicism.
+What specific mechanism is likely responsible when two or more offspring have an autosomal dominant disease despite no family history?,Germline mosaicism.
+What is the average coefficient of relationship between siblings?,$1/2$.
+"On average, what fraction of DNA sequences are shared between an uncle and his niece?",$1/4$.
+What is the coefficient of relationship for first cousins?,$1/8$.
+"In first-cousin marriages, how does the rarity of a recessive disease affect the likelihood of parental consanguinity?","The rarer the recessive disease, the more likely the parents are consanguineous."
+Which statistical tool is used to demonstrate the most likely recombination frequency between two loci?,The logarithm of the odds (LOD) score.
+"For multifactorial diseases, what must be crossed before the disease is expressed according to the threshold model?",The threshold of liability.
+"In the liability model for multifactorial inheritance, where are individuals with the highest disease risk located on the distribution?",At the extreme high end (the tail) of the distribution.
+How does the recurrence risk for a multifactorial disease change as the number of affected family members increases?,The recurrence risk increases.
+What is the effect on recurrence risk for a multifactorial disease if the expression in the proband is more severe?,The recurrence risk is higher.
+"In multifactorial diseases with sex-specific thresholds, which proband sex confers a higher recurrence risk on relatives?",The less commonly affected sex.
+What type of risk for multifactorial diseases is derived from direct observation of data across large series of families?,Empirical risk.
+"In general, what is the mathematical relationship between the sibling recurrence risk and the population prevalence for multifactorial diseases?",The sibling recurrence risk is approximately equal to the square root of the population prevalence.
+What does a heritability value of $1.0$ indicate about a trait's variation in a population?,All variation in the trait is attributed to genetic factors.
+"What statistical approach is used to refine risk estimates by incorporating conditional information, such as the birth of healthy children?",Bayesian probability (or Bayes' Theorem).
+"In a Bayesian calculation, what term describes the initial risk based on the population or family pedigree before new information is added?",Prior probability.
+"In Bayesian analysis, what is the 'conditional probability' based upon?",New information or observations that modify the prior probability (e.g. producing normal offspring).
+How is the 'joint probability' calculated in a Bayesian table?,By multiplying the prior probability by the conditional probability.
+What is the 'posterior probability' in Bayesian risk assessment?,The standardised result that provides the final refined risk estimate.
+What is the prior probability that a woman is a carrier of an X-linked recessive disorder if she is the daughter of a carrier?,$1/2$.
+What is the primary limitation of Genome-Wide Association Studies (GWAS) regarding individual disease risk?,The variants detected typically have only a small effect on disease risk ($5\%$ to $20\%$).
+"What term defines the analysis of chromosomes, DNA, RNA, or proteins to detect abnormalities causing genetic disease?",Genetic testing.
+What is 'presymptomatic diagnosis' in the context of genetic testing?,Identifying individuals who have inherited a disease-causing gene before symptoms develop.
+"In genetic testing, what distinguishes 'indirect diagnosis' from 'direct mutation diagnosis'?",Indirect diagnosis uses linked markers (linkage analysis) rather than examining the disease-causing mutation itself.
+What is the significance of a LOD score of $3.0$ or higher in linkage analysis?,It is generally considered strong evidence that two loci are linked.
+What is the main goal of precision (predictive) medicine?,To estimate personal disease risk and treatment effectiveness based on unique genetic and environmental factors.
+Why is an accurate diagnosis considered the most important first step in clinical genetics?,"All subsequent counselling, risk determination, and management options depend on the specific etiology of the condition."
+"In clinical genetics, what is the typical sibling recurrence risk for an autosomal recessive disorder?",$25\%$.
+What is the percentage of Marfan syndrome cases caused by new mutations?,$30\%$.
+What percentage of neurofibromatosis type 1 (NF1) cases are estimated to be new mutations?,$50\%$.
+What term is used for support groups that help families adjust to and manage genetic disorders?,Genetic advocacy groups.
+"In the context of X-linked recessive lethal disorders like DMD, what is the probability that a mother of an isolated case is a carrier?",$2/3$.
+What happens to the recurrence risk for a woman who has already had one child with Trisomy 21 (Down syndrome)?,It is slightly increased (approximately $1\%$).
+How does a chromosome translocation affect the recurrence risk of Down syndrome compared to simple trisomy?,The recurrence risk is significantly higher if a parent carries a translocation.
+What is the estimated recurrence risk for a female carrier of a $21/14$ translocation producing a child with Down syndrome?,$10\%$ to $15\%$.
+What is the estimated recurrence risk for a male carrier of a $21/14$ translocation producing a child with Down syndrome?,$1\%$ to $2\%$.
+How does linkage analysis change a risk estimate for a person who has inherited a marker allele linked to a disease gene?,It modifies the risk based on the established phase and the recombination frequency ($\theta$).
+Why are single nucleotide polymorphisms (SNPs) useful in GWAS for risk calculation?,They provide a dense set of markers across the genome to identify associations with common multifactorial disorders.
+What is 'carrier screening' intended to achieve in specific ethnic groups?,To identify heterozygous individuals at risk of having offspring with specific autosomal recessive disorders common in that group.
+"In Bayesian analysis for X-linked recessive carriers, what is the conditional probability if the woman has $3$ healthy sons?",$(1/2)^3 = 1/8$.
+"What describes a diagnostic panel that examines specific genes associated with a condition, such as familial colorectal cancer?",Targeted disease-sequencing panel.
+How does 'reduced penetrance' complicate the calculation of recurrence risks?,It means an individual may inherit the disease-causing genotype but never manifest the clinical symptoms.
+What is the typical sibling recurrence risk for multifactorial congenital malformations?,$5\%$ or less.
+What is 'incidental finding' in the context of whole-genome sequencing?,Discovering a pathogenic variant for a disease unrelated to the original reason for testing.
+What constitutes the 'liability' in the multifactorial threshold model?,The combined influence of all genetic and environmental factors that contribute to the development of a disease.
+"In the Hardy-Weinberg principle, what term represents the frequency of heterozygous carriers?",$2pq$.

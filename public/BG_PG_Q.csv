@@ -1,0 +1,64 @@
+What term defines a change in the DNA sequence that serves as the ultimate source of all genetic variation?,Mutation
+Which specific cells must a mutation affect to be transmitted from one generation to the next?,Germline cells
+What is the term for the differing DNA sequences of a gene among individuals?,Alleles
+Concept: Locus,Definition: The specific physical location of a gene on a chromosome.
+An individual possessing two identical alleles at a given locus is known as a _____.,Homozygote
+An individual possessing two different alleles at a given locus is known as a _____.,Heterozygote
+What term describes the combination of alleles present at a specific locus in an individual?,Genotype
+How is the genotype frequency of a population calculated?,By dividing the count of each genotype by the total number of subjects in the sample.
+What term refers to the proportion of each specific allele at a locus within a population?,Gene frequency (or allele frequency)
+Which principle specifies the mathematical relationship between gene frequencies and genotype frequencies under random mating?,The Hardy-Weinberg Principle
+"In the Hardy-Weinberg equation $p^2 + 2pq + q^2 = 1$, what does $p^2$ represent?",The frequency of the homozygous dominant genotype.
+"In the Hardy-Weinberg equation $p^2 + 2pq + q^2 = 1$, what does $2pq$ represent?",The frequency of the heterozygous genotype.
+What is the synonymous term for 'random mating' used in population genetics?,Panmixia
+"Under Hardy-Weinberg equilibrium, if the frequency of a recessive disease is 1 in 2500, what is the estimated carrier frequency?",1 in 25
+Which evolutionary force is described as the 'editor' of genetic variation by increasing the frequency of favourable mutations?,Natural selection
+Under what environmental condition is the sickle cell mutation selectively advantageous for heterozygotes?,The presence of $Plasmodium$ $falciparum$ malaria.
+What term describes the evolutionary process where gene frequencies change due to random fluctuations across generations?,Genetic drift
+How does population size relate to the magnitude of genetic drift?,Genetic drift is greater in smaller populations.
+Which phenomenon occurs when a small group of individuals establishes a new population with unrepresentative allele frequencies?,Founder effect
+"Which evolutionary force involves the exchange of migrants between populations, making them genetically more similar?",Gene flow
+What is the equilibrium state reached when natural selection eliminates harmful alleles at the same rate they are introduced by mutation?,Mutation-selection balance
+"In population genetics, what does the 'selection coefficient' ($s$) measure?",The relative reduction in the number of offspring produced by carriers of a specific genotype.
+"What is the probability that a new, selectively neutral mutation will eventually become fixed in a diploid population of size $N$?",$\frac{1}{2N}$
+"According to genomic data, what was the approximate size of the ancestral human population in Africa 200,000 years ago?","10,000 individuals"
+"What is the average time to fixation for a neutral mutation in an ancestral population of 10,000 individuals with 20-year generations?","Approximately 800,000 years"
+"By convention, what minimum frequency must a genetic variation reach in a population to be classified as a polymorphism?",1%
+What does the abbreviation 'SNP' stand for in the context of genetic variation?,Single-nucleotide polymorphism
+"How often, on average, do two randomly chosen human genomes differ by a single nucleotide pair?",1 in every 1000 nucleotide pairs
+What are 'haplotype blocks' in the human genome?,Combinations of polymorphisms or markers that are inherited together as a unit.
+How does the age of a polymorphism generally relate to the size of its surrounding haplotype block?,Older polymorphisms typically have smaller surrounding haplotype blocks due to more crossover events over time.
+What term describes the non-random association of alleles at different loci in a population?,Linkage disequilibrium
+Which research method compares the frequency of SNPs between individuals with a disease and healthy controls?,Genome-wide association study (GWAS)
+What is the approximate number of new mutations present in a human genome at birth compared to the parental genomes?,70 mutations
+Which phenomenon describes the survival advantage of offspring from two different inbred subpopulations?,Hybrid vigour
+Why are autosomal recessive disorders more common in consanguineous unions?,Relatives are more likely to share disease genes inherited from a common ancestor.
+What is the average proportion of DNA sequences shared between first cousins?,$\frac{1}{8}$
+What is the average proportion of DNA sequences shared between full siblings?,$\frac{1}{2}$
+Which process allows bacteria to transfer virulence genes or antibiotic resistance between individuals?,Horizontal gene transfer
+Identify the three primary mechanisms of horizontal gene transfer in bacteria.,"Transformation, transduction, and conjugation."
+What are 'pathogenicity islands' in bacterial genomes?,Large clusters of virulence genes acquired through horizontal gene transfer.
+How does $Vibrio$ $cholerae$ acquire the genes for the cholera toxin?,By infection with a bacteriophage (CTX$\phi$).
+Pathogens that can only replicate inside the body of their host are termed _____.,Obligate pathogens
+What strategy does $Trypanosoma$ $brucei$ use to evade the host immune response over long periods?,Antigenic variation of its variant-specific glycoprotein (VSG) coat.
+Approximately how many different inactive VSG genes are found in the $T.$ $brucei$ genome?,"1,000"
+Why is it difficult to develop a vaccine against $Neisseria$ $gonorrhoeae$?,The bacterium frequently changes its surface pilin proteins through gene recombination.
+Which evolutionary factor makes RNA viruses like HIV particularly difficult to treat with single drugs?,High mutation rates due to error-prone replication lacking proofreading.
+What process allows influenza viruses to create new pandemic strains by exchanging RNA segments?,Reassortment (or recombination)
+Which mechanism of antibiotic resistance involves the pathogen actively pumping the drug out of the cell?,Efflux pumps
+How does the misuse of antibiotics in livestock contribute to human health risks?,It promotes the selection of drug-resistant bacteria that can be transferred to humans.
+What defines 'pleiotropy' in genetics?,A single gene exerting effects on multiple aspects of physiology or anatomy.
+Which term describes traits whose variation is caused by the combined effects of multiple genes and environmental factors?,Multifactorial inheritance
+Why is the frequency of a lethal dominant allele in a population effectively equal to the mutation rate ($\mu$)?,Natural selection eliminates every new copy of the lethal allele as it arises.
+"In very small populations, what can happen to the frequency of a neutral allele due to chance alone?",It can either disappear or become fixed in the population.
+The collection of all genes present across all strains of a bacterial species is known as the _____.,Pangenome
+What is the primary primary cause of the 'Out of Africa' migration pattern identified in human DNA?,Founder effects as small groups migrated and established new populations.
+Which DNA markers are used to trace the transmission of a disease-causing allele through a family?,Genetic markers
+What is the 'coefficient of relationship' between an uncle and his niece?,$\frac{1}{4}$
+Why are most SNPs considered to be 'genetically silent'?,They fall within noncritical regions of the genome and do not affect cell function.
+"How many SNP differences exist, on average, between any two human genomes chosen at random?",$2.5 \times 10^6$
+Which concept explains why modern human populations share about 2% of their genome with Neanderthals?,Interbreeding (or gene flow) between modern humans and Neanderthals.
+What does a bell-shaped distribution of a trait in a population typically indicate about its inheritance?,It is a quantitative trait influenced by multiple additive genetic and environmental factors.
+Which mechanism of horizontal gene transfer involves the uptake of free DNA from the environment by a competent bacterium?,Transformation
+Which mechanism of horizontal gene transfer involves the transfer of DNA between bacteria via a plasmid during cell-to-cell contact?,Conjugation
+What is the term for a mutation that prevents an individual from contributing any genes to the next generation?,Genetic lethal mutation
