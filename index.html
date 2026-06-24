@@ -7,20 +7,36 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="app">
-    <header class="hero">
+  <div id="app-shell" class="app-shell is-mobile-menu">
+    <header class="app-header" id="app-header">
+      <button type="button" class="home-overview-btn" id="homeBtn" aria-label="Back to course overview">
+        <span class="home-overview-btn__media"><span class="home-overview-btn__fallback" aria-hidden>⊕</span></span>
+        <span class="home-overview-btn__label">Course overview</span>
+      </button>
       <h1>Medical Genetics</h1>
+      <a class="progress-link progress-link--header" href="https://progress-azure-five.vercel.app/" target="_blank" rel="noopener noreferrer">Progress →</a>
     </header>
 
-    <div class="layout">
-      <nav class="tree-panel" id="tree-nav" aria-label="Chapters and topics"></nav>
+    <div class="mobile-lesson-bar" id="mobileBar" hidden>
+      <button type="button" class="mobile-menu-back" id="mobileMenuBack">← Menu</button>
+      <div class="mobile-lesson-bar__text">
+        <span class="mobile-lesson-bar__chapter" id="mobileChapter"></span>
+        <span class="mobile-lesson-bar__sub" id="mobileSub"></span>
+      </div>
+    </div>
 
-      <div class="content-panel">
+    <div class="layout">
+      <div class="sidebar-column">
+        <nav class="tree-panel" id="tree-nav" aria-label="Chapters and topics"></nav>
+        <a class="progress-link progress-link--sidebar" href="https://progress-azure-five.vercel.app/" target="_blank" rel="noopener noreferrer">My progress →</a>
+      </div>
+
+      <div class="content-panel" id="content-panel">
         <nav class="resources" id="resource-nav" aria-label="Resource type" hidden></nav>
         <section id="viewer" class="viewer" aria-live="polite"></section>
       </div>
     </div>
-  </main>
+  </div>
 
   <script src="app.js"></script>
 </body>

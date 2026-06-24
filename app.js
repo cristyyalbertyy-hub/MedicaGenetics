@@ -1,7 +1,10 @@
+const STUDENT_PROGRESS_URL = "https://progress-azure-five.vercel.app/";
+
 const curriculum = [
   {
     id: "BG",
     label: "Basic Genetics",
+    color: "#14213d",
     subchapters: [
       { id: "T", label: "Terminology" },
       { id: "MP", label: "Mendelian Principles" },
@@ -11,6 +14,7 @@ const curriculum = [
   {
     id: "IM",
     label: "Inheritance Models",
+    color: "#2d4636",
     subchapters: [
       { id: "M", label: "Monogenic" },
       { id: "C", label: "Chromosomal" },
@@ -21,6 +25,7 @@ const curriculum = [
   {
     id: "CA",
     label: "Clinical Application",
+    color: "#d36b31",
     subchapters: [
       { id: "PA", label: "Pedigree Analysis" },
       { id: "RC", label: "Risk Calculation" },
@@ -57,8 +62,16 @@ const state = {
   chapterId: null,
   subchapterId: null,
   resourceId: null,
+  atHome: true,
+  mobileMenuOpen: true,
 };
 
+const shellEl = document.getElementById("app-shell");
+const headerEl = document.getElementById("app-header");
+const mobileBarEl = document.getElementById("mobileBar");
+const mobileChapterEl = document.getElementById("mobileChapter");
+const mobileSubEl = document.getElementById("mobileSub");
+const contentPanelEl = document.getElementById("content-panel");
 const treeNavEl = document.getElementById("tree-nav");
 const resourceNavEl = document.getElementById("resource-nav");
 const viewerEl = document.getElementById("viewer");
@@ -180,6 +193,83 @@ function escapeHtml(text) {
   return String(text).replace(/[&<>"]/g, (ch) => map[ch] || ch);
 }
 
+function setShellMode() {
+  shellEl.classList.toggle("is-mobile-menu", state.mobileMenuOpen);
+  shellEl.classList.toggle("is-mobile-content", !state.mobileMenuOpen);
+}
+
+function chapterById(id) {
+  return curriculum.find((chapter) => chapter.id === id);
+}
+
+function subchapterLabel(chapterId, subchapterId) {
+  return chapterById(chapterId)?.subchapters.find((sub) => sub.id === subchapterId)?.label ?? "";
+}
+
+function updateMobileBar() {
+  const chapter = state.chapterId ? chapterById(state.chapterId) : null;
+  const subLabel = state.subchapterId ? subchapterLabel(state.chapterId, state.subchapterId) : "";
+  const resource = RESOURCES.find((res) => res.id === state.resourceId);
+
+  if (state.atHome || state.mobileMenuOpen || !chapter) {
+    mobileBarEl.hidden = true;
+    headerEl.classList.remove("app-header--compact-mobile");
+    return;
+  }
+
+  mobileBarEl.hidden = false;
+  headerEl.classList.add("app-header--compact-mobile");
+  mobileBarEl.style.borderLeftColor = chapter.color;
+  mobileChapterEl.textContent = chapter.label;
+  mobileSubEl.textContent = resource ? resource.label : subLabel || "Choose a resource";
+}
+
+function renderHome() {
+  state.atHome = true;
+  state.chapterId = null;
+  state.subchapterId = null;
+  state.resourceId = null;
+  contentPanelEl.removeAttribute("data-tint");
+  resourceNavEl.hidden = true;
+  updateMobileBar();
+
+  viewerEl.innerHTML = `
+    <div class="overview-panel">
+      <div class="overview-intro">
+        <p class="overview-lead">Three chapters covering basic genetics, inheritance models and clinical application.</p>
+        <ul class="overview-systems">
+          ${curriculum
+            .map(
+              (chapter) => `
+                <li class="overview-systems__item" style="border-left-color: ${chapter.color}">
+                  <strong>${escapeHtml(chapter.label)}</strong>
+                  <span>${chapter.subchapters.length} sub-topics</span>
+                </li>
+              `,
+            )
+            .join("")}
+        </ul>
+      </div>
+      <p class="overview-hint">Open a coloured chapter in the menu, then choose a sub-topic.</p>
+      <p class="overview-progress">Already enrolled? <a class="progress-link progress-link--inline" href="${STUDENT_PROGRESS_URL}" target="_blank" rel="noopener noreferrer">My progress →</a></p>
+      <button type="button" class="mobile-browse-btn" id="mobileBrowseBtn">Browse chapters →</button>
+    </div>
+  `;
+  viewerEl.querySelector("#mobileBrowseBtn")?.addEventListener("click", openMobileMenu);
+}
+
+function openMobileMenu() {
+  state.mobileMenuOpen = true;
+  setShellMode();
+  updateMobileBar();
+}
+
+function closeMobileMenu() {
+  state.mobileMenuOpen = false;
+  setShellMode();
+  updateMobileBar();
+}
+
 function setPlaceholder(message) {
   clearQuizKeyboardHandler();
   viewerEl.innerHTML = `<p class="viewer-placeholder">${escapeHtml(message)}</p>`;
@@ -196,81 +286,44 @@ function renderInlineQuiz(items) {
   let answerVisible = false;
 
   const root = document.createElement("div");
-  root.className = "quiz-inline";
+  root.className = "questionnaire";
 
   const render = () => {
     const item = items[index];
     root.innerHTML = `
-      <div class="quiz-head">
-        <div>
-          <h2>Questions</h2>
-          <p class="quiz-meta">Card ${index + 1} of ${items.length}</p>
+      <p class="questionnaire__progress">Question ${index + 1} of ${items.length}</p>
+      <div class="questionnaire__nav-row">
+        <button type="button" class="questionnaire__arrow" data-action="prev" ${index === 0 ? "disabled" : ""} aria-label="Previous question">←</button>
+        <div class="questionnaire__card">
+          <p class="questionnaire__question">${escapeHtml(String(item.question))}</p>
+          ${
+            answerVisible
+              ? `<div class="questionnaire__answer"><span class="questionnaire__answer-label">Answer</span><p>${escapeHtml(String(item.answer))}</p></div>`
+              : ""
+          }
         </div>
-        <p class="quiz-kbd-hint">Keyboard: ←/→ and Space/Enter</p>
+        <button type="button" class="questionnaire__arrow" data-action="next" ${index === items.length - 1 ? "disabled" : ""} aria-label="Next question">→</button>
       </div>
-      <p class="quiz-question">${escapeHtml(String(item.question))}</p>
-      <div class="quiz-answer" data-answer ${answerVisible ? "" : "hidden"}>${escapeHtml(String(item.answer))}</div>
-      <div class="quiz-actions">
-        <button type="button" class="btn btn-secondary" data-action="toggle">${answerVisible ? "Hide answer" : "Show answer"}</button>
-        <button type="button" class="btn btn-secondary" data-action="prev" ${index === 0 ? "disabled" : ""}>Previous</button>
-        <button type="button" class="btn btn-primary" data-action="next" ${index === items.length - 1 ? "disabled" : ""}>Next</button>
-      </div>
+      ${answerVisible ? "" : `<button type="button" class="questionnaire__reveal" data-action="toggle">Show answer</button>`}
     `;
 
-    root.querySelector('[data-action="toggle"]').addEventListener("click", () => {
-      answerVisible = !answerVisible;
+    root.querySelector('[data-action="toggle"]')?.addEventListener("click", () => {
+      answerVisible = true;
       render();
     });
-    root.querySelector('[data-action="prev"]').addEventListener("click", () => {
+    root.querySelector('[data-action="prev"]')?.addEventListener("click", () => {
       if (index === 0) return;
       index -= 1;
       answerVisible = false;
       render();
     });
-    root.querySelector('[data-action="next"]').addEventListener("click", () => {
+    root.querySelector('[data-action="next"]')?.addEventListener("click", () => {
       if (index === items.length - 1) return;
       index += 1;
       answerVisible = false;
       render();
     });
   };
-
-  quizKeyboardHandler = (event) => {
-    const target = event.target;
-    const isTypingField =
-      target instanceof HTMLElement &&
-      (target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.isContentEditable);
-    if (isTypingField) return;
-
-    if (event.key === "ArrowRight") {
-      if (index < items.length - 1) {
-        index += 1;
-        answerVisible = false;
-        render();
-      }
-      event.preventDefault();
-      return;
-    }
-
-    if (event.key === "ArrowLeft") {
-      if (index > 0) {
-        index -= 1;
-        answerVisible = false;
-        render();
-      }
-      event.preventDefault();
-      return;
-    }
-
-    if (event.key === " " || event.key === "Enter") {
-      answerVisible = !answerVisible;
-      render();
-      event.preventDefault();
-    }
-  };
-  document.addEventListener("keydown", quizKeyboardHandler);
 
   render();
   viewerEl.replaceChildren(root);
@@ -394,20 +447,25 @@ function toggleChapter(chapterId) {
 }
 
 function selectSubchapter(chapterId, subchapterId) {
+  state.atHome = false;
   state.chapterId = chapterId;
   state.subchapterId = subchapterId;
   state.resourceId = null;
   state.expanded[chapterId] = true;
+  contentPanelEl.setAttribute("data-tint", chapterId);
+  closeMobileMenu();
 
   resourceNavEl.hidden = false;
   renderTree();
   updateResourceButtons();
   setPlaceholder("Choose Video, Podcast, Infographic, or Questions.");
+  updateMobileBar();
 }
 
 function selectResource(id) {
   state.resourceId = id;
   updateResourceButtons();
+  updateMobileBar();
   loadSelectedResource();
 }
 
@@ -422,8 +480,9 @@ function renderTree() {
     const parentBtn = document.createElement("button");
     parentBtn.type = "button";
     parentBtn.className = "tree-parent";
+    parentBtn.style.backgroundColor = chapter.color;
     parentBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
-    parentBtn.innerHTML = `<span class="caret" aria-hidden="true"></span><span class="tree-parent-label">${escapeHtml(chapter.label)}</span>`;
+    parentBtn.innerHTML = `<span class="caret" aria-hidden="true">${expanded ? "▼" : "▶"}</span><span class="tree-parent-label">${escapeHtml(chapter.label)}</span>`;
     parentBtn.addEventListener("click", () => toggleChapter(chapter.id));
 
     branch.appendChild(parentBtn);
@@ -438,17 +497,10 @@ function renderTree() {
         childBtn.className = "tree-child";
         childBtn.setAttribute("data-chapter", chapter.id);
         childBtn.setAttribute("data-subchapter", sub.id);
-        const prefix = filePrefix(chapter.id, sub.id);
         const isActive = state.chapterId === chapter.id && state.subchapterId === sub.id;
         if (isActive) childBtn.classList.add("active");
 
-        childBtn.innerHTML = `
-          <span class="caret-small" aria-hidden="true">▶</span>
-          <span class="tree-child-text">
-            <span class="tree-child-title">${escapeHtml(sub.label)}</span>
-            <span class="tree-child-id">${escapeHtml(prefix)}</span>
-          </span>
-        `;
+        childBtn.innerHTML = `<span class="tree-child-title">${escapeHtml(sub.label)}</span><span class="lesson-card-arrow" aria-hidden>›</span>`;
         childBtn.addEventListener("click", () => selectSubchapter(chapter.id, sub.id));
         childrenWrap.appendChild(childBtn);
       });
@@ -476,9 +528,15 @@ function buildResourceNav() {
 
 function init() {
   buildResourceNav();
-  resourceNavEl.hidden = true;
   renderTree();
-  setPlaceholder("Expand a chapter in the menu, then choose a sub-topic (for example BG_T).");
+  renderHome();
+  setShellMode();
+  document.getElementById("homeBtn")?.addEventListener("click", () => {
+    openMobileMenu();
+    renderHome();
+    renderTree();
+  });
+  document.getElementById("mobileMenuBack")?.addEventListener("click", openMobileMenu);
 }
 
 init();
