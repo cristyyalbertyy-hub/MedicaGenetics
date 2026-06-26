@@ -1,10 +1,7 @@
 {
-  "name": "medical-genetics-hub",
+  "name": "medica-genetics",
   "private": true,
   "scripts": {
-    "dev": "serve . -l 5173"
-  },
-  "devDependencies": {
-    "serve": "^14.2.4"
+    "build": "node scripts/write-config.js"
   }
 }

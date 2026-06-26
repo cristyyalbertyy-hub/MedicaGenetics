@@ -1,15 +1,13 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
   "cleanUrls": true,
   "trailingSlash": false,
-  "builds": [
-    { "src": "index.html", "use": "@vercel/static" },
-    { "src": "styles.css", "use": "@vercel/static" },
-    { "src": "app.js", "use": "@vercel/static" },
-    { "src": "public/**", "use": "@vercel/static" }
-  ],
   "routes": [
     { "src": "/styles.css", "dest": "/styles.css" },
+    { "src": "/config.public.js", "dest": "/config.public.js" },
+    { "src": "/auth-gate.js", "dest": "/auth-gate.js" },
+    { "src": "/main.js", "dest": "/main.js" },
     { "src": "/app.js", "dest": "/app.js" },
     { "src": "/public/(.*)", "dest": "/public/$1" },
     { "src": "/(.*)", "dest": "/index.html" }

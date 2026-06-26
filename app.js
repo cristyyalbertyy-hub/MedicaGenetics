@@ -539,4 +539,4 @@ function init() {
   document.getElementById("mobileMenuBack")?.addEventListener("click", openMobileMenu);
 }
 
-init();
+export { init };
