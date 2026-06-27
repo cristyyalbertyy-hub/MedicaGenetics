@@ -1,15 +1,9 @@
 {
-  "version": 2,
   "buildCommand": "npm run build",
+  "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
-  "routes": [
-    { "src": "/styles.css", "dest": "/styles.css" },
-    { "src": "/config.public.js", "dest": "/config.public.js" },
-    { "src": "/auth-gate.js", "dest": "/auth-gate.js" },
-    { "src": "/main.js", "dest": "/main.js" },
-    { "src": "/app.js", "dest": "/app.js" },
-    { "src": "/public/(.*)", "dest": "/public/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/((?!styles\\.css|config\\.public\\.js|auth-gate\\.js|main\\.js|app\\.js|public/).*)", "destination": "/index.html" }
   ]
 }
