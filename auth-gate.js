@@ -157,6 +157,16 @@ export async function runAccessGate() {
 
   let loginState = { error: null, submitting: false, sent: false, email: "" };
 
+  async function refreshEntitlementCheck() {
+    renderGate(gateEl, { type: "loading" });
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      showLogin();
+      return;
+    }
+    await grantAccessIfEntitled(currentUser);
+  }
+
   async function grantAccessIfEntitled(user) {
     if (!user) return false;
     try {
@@ -165,7 +175,7 @@ export async function runAccessGate() {
         renderGate(gateEl, {
           type: "no-access",
           email: user.email || "",
-          onRefresh: () => void checkSession(),
+          onRefresh: () => void refreshEntitlementCheck(),
           onLogout: () => void signOut(auth).then(() => showLogin()),
         });
         return false;
@@ -178,7 +188,7 @@ export async function runAccessGate() {
       renderGate(gateEl, {
         type: "no-access",
         email: user.email || "",
-        onRefresh: () => void checkSession(),
+        onRefresh: () => void refreshEntitlementCheck(),
         onLogout: () => void signOut(auth).then(() => showLogin()),
       });
       return false;
@@ -247,8 +257,14 @@ export async function runAccessGate() {
           showLogin();
         } catch (error) {
           loginState.submitting = false;
-          loginState.error =
+          const message =
             error instanceof Error ? error.message : "Erro ao enviar link.";
+          if (message.includes("auth/quota-exceeded")) {
+            loginState.error =
+              "Limite diário de emails atingido. Tente amanhã ou use a sessão já iniciada noutro separador.";
+          } else {
+            loginState.error = message;
+          }
           showLogin();
         }
       },
