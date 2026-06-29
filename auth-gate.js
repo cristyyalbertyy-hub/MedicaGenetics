@@ -143,7 +143,7 @@ function renderGate(root, view) {
     (view.error ? `<p class="form-error" role="alert">${escapeHtml(view.error)}</p>` : "") +
     `<button type="submit" class="btn btn-primary">${view.submitting ? "A enviar…" : "Enviar link de acesso"}</button>` +
     `</form>` +
-    `<p class="demo-note">Recomendado: <a href="https://medical-science-lilac.vercel.app/acesso/">Entrar pela conta Studio9</a> (1 magic link para todos os pacotes).</p>` +
+    `<p class="demo-note">Recomendado: <a href="https://medical-science-lilac.vercel.app/conta/">Entrar pela conta Studio9</a> (1 magic link para todos os pacotes).</p>` +
     `<p class="demo-note">Ainda não comprou? <a href="${escapeHtml(STORE_URL)}" target="_blank" rel="noopener noreferrer">Ver preços e planos</a></p>`;
 
   const form = card.querySelector("#auth-form");
