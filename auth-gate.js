@@ -6,6 +6,9 @@ import {
   isSignInWithEmailLink,
   signInWithEmailLink,
   signOut,
+  signInWithCustomToken,
+  setPersistence,
+  browserLocalPersistence,
 } from "https://esm.sh/firebase@12.15.0/auth";
 import {
   getFirestore,
@@ -41,7 +44,21 @@ function cleanEmailLinkFromUrl() {
   url.searchParams.delete("oobCode");
   url.searchParams.delete("mode");
   url.searchParams.delete("lang");
-  window.history.replaceState(null, "", url.pathname);
+  window.history.replaceState(null, "", url.pathname + url.search);
+}
+
+async function trySessionHandoff(auth) {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("studio9_handoff");
+  if (!token) return;
+  await signInWithCustomToken(auth, token);
+  params.delete("studio9_handoff");
+  const rest = params.toString();
+  window.history.replaceState(
+    null,
+    "",
+    `${window.location.pathname}${rest ? `?${rest}` : ""}`,
+  );
 }
 
 async function fetchActiveEntitlement(db, userId) {
@@ -126,6 +143,7 @@ function renderGate(root, view) {
     (view.error ? `<p class="form-error" role="alert">${escapeHtml(view.error)}</p>` : "") +
     `<button type="submit" class="btn btn-primary">${view.submitting ? "A enviar…" : "Enviar link de acesso"}</button>` +
     `</form>` +
+    `<p class="demo-note">Recomendado: <a href="https://medical-science-lilac.vercel.app/acesso/">Entrar pela conta Studio9</a> (1 magic link para todos os pacotes).</p>` +
     `<p class="demo-note">Ainda não comprou? <a href="${escapeHtml(STORE_URL)}" target="_blank" rel="noopener noreferrer">Ver preços e planos</a></p>`;
 
   const form = card.querySelector("#auth-form");
@@ -154,6 +172,8 @@ export async function runAccessGate() {
   });
   const auth = getAuth(app);
   const db = getFirestore(app);
+  await setPersistence(auth, browserLocalPersistence);
+  await trySessionHandoff(auth).catch(() => undefined);
 
   let loginState = { error: null, submitting: false, sent: false, email: "" };
 
