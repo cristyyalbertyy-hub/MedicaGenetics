@@ -16,10 +16,15 @@ import {
   query,
   where,
   getDocs,
+  doc,
+  getDoc,
 } from "https://esm.sh/firebase@12.15.0/firestore";
 
 const config = window.STUDIO9_CONFIG || {};
 const PACKAGE_ID = config.packageId || "genetics";
+const PROGRESS_URL =
+  config.progressUrl ||
+  `https://progress-azure-five.vercel.app/?package=${PACKAGE_ID}`;
 const STORE_URL =
   config.storeUrl || "https://medical-science-lilac.vercel.app/precos/";
 const EMAIL_FOR_SIGN_IN_KEY = "studio9.emailForSignIn";
@@ -62,6 +67,16 @@ async function trySessionHandoff(auth) {
 }
 
 async function fetchActiveEntitlement(db, userId) {
+  const directRef = doc(db, "entitlements", `${userId}_${PACKAGE_ID}`);
+  const directSnap = await getDoc(directRef);
+  if (directSnap.exists()) {
+    const data = directSnap.data();
+    const expiresAt = new Date(data.expires_at);
+    if (!Number.isNaN(expiresAt.getTime()) && expiresAt > new Date()) {
+      return data;
+    }
+  }
+
   const q = query(
     collection(db, "entitlements"),
     where("user_id", "==", userId),
@@ -77,6 +92,13 @@ async function fetchActiveEntitlement(db, userId) {
   }
 
   return data;
+}
+
+/** @type {{ auth: import('firebase/auth').Auth, db: import('firebase/firestore').Firestore, user: import('firebase/auth').User, packageId: string, progressUrl: string } | null} */
+let studio9Session = null;
+
+export function getStudio9Session() {
+  return studio9Session;
 }
 
 function escapeHtml(value) {
@@ -202,7 +224,15 @@ export async function runAccessGate() {
       }
       gateEl.hidden = true;
       shellEl.hidden = false;
+      studio9Session = {
+        auth,
+        db,
+        user,
+        packageId: PACKAGE_ID,
+        progressUrl: PROGRESS_URL,
+      };
       addAccountBar(user.email || "");
+      updateProgressLinks();
       return true;
     } catch {
       renderGate(gateEl, {
@@ -215,6 +245,12 @@ export async function runAccessGate() {
     }
   }
 
+  function updateProgressLinks() {
+    document.querySelectorAll(".progress-link").forEach((link) => {
+      link.href = PROGRESS_URL;
+    });
+  }
+
   function addAccountBar(email) {
     const header = document.getElementById("app-header");
     if (!header || header.querySelector(".auth-account")) return;
@@ -225,6 +261,7 @@ export async function runAccessGate() {
       `<span class="auth-account__email" title="${escapeHtml(email)}">${escapeHtml(email)}</span>` +
       `<button type="button" class="btn-ghost">Sair</button>`;
     wrap.querySelector("button")?.addEventListener("click", () => {
+      studio9Session = null;
       void signOut(auth).then(() => window.location.reload());
     });
 

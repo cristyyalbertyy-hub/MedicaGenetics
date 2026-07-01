@@ -1,4 +1,8 @@
-const STUDENT_PROGRESS_URL = "https://progress-azure-five.vercel.app/";
+import { getStudio9Session } from "./auth-gate.js";
+import { recordProgress } from "./progress-client.js";
+
+const STUDENT_PROGRESS_URL =
+  "https://progress-azure-five.vercel.app/?package=genetics";
 
 const curriculum = [
   {
@@ -76,6 +80,41 @@ const treeNavEl = document.getElementById("tree-nav");
 const resourceNavEl = document.getElementById("resource-nav");
 const viewerEl = document.getElementById("viewer");
 let quizKeyboardHandler = null;
+/** @type {Set<string>} */
+const progressCompletedKeys = new Set();
+
+function currentItemKey() {
+  if (!state.chapterId || !state.subchapterId) return null;
+  return `${state.chapterId}/${state.subchapterId}`;
+}
+
+function progressTrackKey(itemKey, resourceId) {
+  return `${itemKey}/${resourceId}`;
+}
+
+async function trackProgress(status, extra = {}) {
+  const session = getStudio9Session();
+  const itemKey = currentItemKey();
+  if (!session?.user || !session.db || !itemKey || !state.resourceId) return;
+
+  const trackKey = progressTrackKey(itemKey, state.resourceId);
+  if (status === "completed" && progressCompletedKeys.has(trackKey)) return;
+
+  try {
+    await recordProgress(
+      session.db,
+      session.user.uid,
+      session.packageId,
+      itemKey,
+      state.resourceId,
+      status,
+      extra,
+    );
+    if (status === "completed") progressCompletedKeys.add(trackKey);
+  } catch (err) {
+    console.warn("Could not save progress:", err);
+  }
+}
 
 function clearQuizKeyboardHandler() {
   if (!quizKeyboardHandler) return;
@@ -284,12 +323,24 @@ function renderInlineQuiz(items) {
   clearQuizKeyboardHandler();
   let index = 0;
   let answerVisible = false;
+  let completionSent = false;
+
+  void trackProgress("started");
+
+  const maybeCompleteQuiz = () => {
+    if (completionSent || index !== items.length - 1) return;
+    completionSent = true;
+    void trackProgress("completed", {
+      score: Math.round(((index + 1) / items.length) * 100),
+    });
+  };
 
   const root = document.createElement("div");
   root.className = "questionnaire";
 
   const render = () => {
     const item = items[index];
+    maybeCompleteQuiz();
     root.innerHTML = `
       <p class="questionnaire__progress">Question ${index + 1} of ${items.length}</p>
       <div class="questionnaire__nav-row">
@@ -354,6 +405,7 @@ async function loadQuestionsCsv(url) {
 function loadMediaViewer(url) {
   const ext = extensionFromUrl(url);
   viewerEl.replaceChildren();
+  void trackProgress("started");
 
   if (ext === "mp4" || ext === "webm") {
     const video = document.createElement("video");
@@ -361,6 +413,7 @@ function loadMediaViewer(url) {
     video.setAttribute("controls", "");
     video.setAttribute("playsinline", "");
     video.src = url;
+    video.addEventListener("ended", () => void trackProgress("completed"));
     viewerEl.appendChild(video);
     return;
   }
@@ -370,6 +423,7 @@ function loadMediaViewer(url) {
     audio.className = "viewer-media";
     audio.setAttribute("controls", "");
     audio.src = url;
+    audio.addEventListener("ended", () => void trackProgress("completed"));
     viewerEl.appendChild(audio);
     return;
   }
@@ -379,6 +433,7 @@ function loadMediaViewer(url) {
     iframe.className = "viewer-frame";
     iframe.title = "Resource";
     iframe.src = url;
+    iframe.addEventListener("load", () => void trackProgress("completed"), { once: true });
     viewerEl.appendChild(iframe);
     return;
   }
@@ -388,6 +443,7 @@ function loadMediaViewer(url) {
     img.className = "viewer-img";
     img.src = url;
     img.alt = "Infographic";
+    img.addEventListener("load", () => void trackProgress("completed"), { once: true });
     viewerEl.appendChild(img);
     return;
   }
