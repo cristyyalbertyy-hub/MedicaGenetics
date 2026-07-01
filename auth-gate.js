@@ -96,6 +96,8 @@ async function fetchActiveEntitlement(db, userId) {
 
 /** @type {{ auth: import('firebase/auth').Auth, db: import('firebase/firestore').Firestore, user: import('firebase/auth').User, packageId: string, progressUrl: string } | null} */
 let studio9Session = null;
+/** @type {boolean} */
+let accessGranted = false;
 
 export function getStudio9Session() {
   return studio9Session;
@@ -110,6 +112,7 @@ function escapeHtml(value) {
 }
 
 function renderGate(root, view) {
+  if (accessGranted) return;
   root.hidden = false;
   root.replaceChildren();
 
@@ -179,7 +182,12 @@ export async function runAccessGate() {
   if (!gateEl || !shellEl) return false;
 
   shellEl.hidden = true;
-  renderGate(gateEl, { type: "loading" });
+  gateEl.hidden = true;
+
+  const hasHandoff = new URLSearchParams(window.location.search).has("studio9_handoff");
+  if (!hasHandoff) {
+    renderGate(gateEl, { type: "loading" });
+  }
 
   if (!isConfigured()) {
     renderGate(gateEl, { type: "unconfigured" });
@@ -199,52 +207,6 @@ export async function runAccessGate() {
 
   let loginState = { error: null, submitting: false, sent: false, email: "" };
 
-  async function refreshEntitlementCheck() {
-    renderGate(gateEl, { type: "loading" });
-    const currentUser = auth.currentUser;
-    if (!currentUser) {
-      showLogin();
-      return;
-    }
-    await grantAccessIfEntitled(currentUser);
-  }
-
-  async function grantAccessIfEntitled(user) {
-    if (!user) return false;
-    try {
-      const entitlement = await fetchActiveEntitlement(db, user.uid);
-      if (!entitlement) {
-        renderGate(gateEl, {
-          type: "no-access",
-          email: user.email || "",
-          onRefresh: () => void refreshEntitlementCheck(),
-          onLogout: () => void signOut(auth).then(() => showLogin()),
-        });
-        return false;
-      }
-      gateEl.hidden = true;
-      shellEl.hidden = false;
-      studio9Session = {
-        auth,
-        db,
-        user,
-        packageId: PACKAGE_ID,
-        progressUrl: PROGRESS_URL,
-      };
-      addAccountBar(user.email || "");
-      updateProgressLinks();
-      return true;
-    } catch {
-      renderGate(gateEl, {
-        type: "no-access",
-        email: user.email || "",
-        onRefresh: () => void refreshEntitlementCheck(),
-        onLogout: () => void signOut(auth).then(() => showLogin()),
-      });
-      return false;
-    }
-  }
-
   function updateProgressLinks() {
     document.querySelectorAll(".progress-link").forEach((link) => {
       link.href = PROGRESS_URL;
@@ -262,6 +224,7 @@ export async function runAccessGate() {
       `<button type="button" class="btn-ghost">Sair</button>`;
     wrap.querySelector("button")?.addEventListener("click", () => {
       studio9Session = null;
+      accessGranted = false;
       void signOut(auth).then(() => window.location.reload());
     });
 
@@ -278,7 +241,68 @@ export async function runAccessGate() {
     }
   }
 
+  function revealApp(user) {
+    accessGranted = true;
+    gateEl.hidden = true;
+    gateEl.replaceChildren();
+    shellEl.hidden = false;
+    studio9Session = {
+      auth,
+      db,
+      user,
+      packageId: PACKAGE_ID,
+      progressUrl: PROGRESS_URL,
+    };
+    addAccountBar(user.email || "");
+    updateProgressLinks();
+  }
+
+  async function refreshEntitlementCheck() {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      accessGranted = false;
+      showLogin();
+      return;
+    }
+    if (!accessGranted) {
+      renderGate(gateEl, { type: "loading" });
+    }
+    await grantAccessIfEntitled(currentUser);
+  }
+
+  async function grantAccessIfEntitled(user) {
+    if (!user) return false;
+    if (accessGranted) return true;
+    try {
+      const entitlement = await fetchActiveEntitlement(db, user.uid);
+      if (!entitlement) {
+        accessGranted = false;
+        shellEl.hidden = true;
+        renderGate(gateEl, {
+          type: "no-access",
+          email: user.email || "",
+          onRefresh: () => void refreshEntitlementCheck(),
+          onLogout: () => void signOut(auth).then(() => showLogin()),
+        });
+        return false;
+      }
+      revealApp(user);
+      return true;
+    } catch {
+      accessGranted = false;
+      shellEl.hidden = true;
+      renderGate(gateEl, {
+        type: "no-access",
+        email: user.email || "",
+        onRefresh: () => void refreshEntitlementCheck(),
+        onLogout: () => void signOut(auth).then(() => showLogin()),
+      });
+      return false;
+    }
+  }
+
   function showLogin() {
+    accessGranted = false;
     shellEl.hidden = true;
     if (loginState.sent) {
       renderGate(gateEl, {
@@ -344,21 +368,30 @@ export async function runAccessGate() {
     await completeEmailLinkSignIn().catch(() => undefined);
     cleanEmailLinkFromUrl();
     return new Promise((resolve) => {
+      let settled = false;
       const unsubscribe = onAuthStateChanged(auth, (user) => {
-        unsubscribe();
+        if (accessGranted) return;
+
         if (user) {
-          resolve(grantAccessIfEntitled(user));
+          void grantAccessIfEntitled(user).then((ok) => {
+            if (!settled) {
+              settled = true;
+              unsubscribe();
+              resolve(ok);
+            }
+          });
           return;
         }
-        showLogin();
-        resolve(false);
+
+        if (!settled) {
+          settled = true;
+          unsubscribe();
+          showLogin();
+          resolve(false);
+        }
       });
     });
   }
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) void grantAccessIfEntitled(user);
-  });
 
   return checkSession();
 }

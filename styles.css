@@ -446,6 +446,11 @@ button { font: inherit; cursor: pointer; }
   .mobile-browse-btn { display: none !important; }
 }
 
+.auth-layout[hidden],
+#auth-gate[hidden] {
+  display: none !important;
+}
+
 .auth-layout {
   min-height: 100vh;
   display: grid;
