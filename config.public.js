@@ -5,5 +5,6 @@ window.STUDIO9_CONFIG = {
   "firebaseAppId": "",
   "packageId": "genetics",
   "appTitle": "Medical Genetics",
-  "storeUrl": "https://medical-science-lilac.vercel.app/precos/"
+  "storeUrl": "https://medical-science-lilac.vercel.app/precos/",
+  "accountUrl": "https://medical-science-lilac.vercel.app/conta/"
 };

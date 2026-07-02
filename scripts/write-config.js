@@ -13,6 +13,7 @@ const cfg = {
   packageId: env("VITE_PACKAGE_ID", "genetics"),
   appTitle: env("VITE_APP_TITLE", "Medical Genetics"),
   storeUrl: env("VITE_STORE_URL", "https://medical-science-lilac.vercel.app/precos/"),
+  accountUrl: env("VITE_ACCOUNT_URL", "https://medical-science-lilac.vercel.app/conta/"),
   progressUrl: env(
     "VITE_PROGRESS_URL",
     `https://progress-azure-five.vercel.app/?package=${env("VITE_PACKAGE_ID", "genetics")}`,

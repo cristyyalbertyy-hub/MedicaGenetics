@@ -27,6 +27,8 @@ const PROGRESS_URL =
   `https://progress-azure-five.vercel.app/?package=${PACKAGE_ID}`;
 const STORE_URL =
   config.storeUrl || "https://medical-science-lilac.vercel.app/precos/";
+const ACCOUNT_URL =
+  config.accountUrl || "https://medical-science-lilac.vercel.app/conta/";
 const EMAIL_FOR_SIGN_IN_KEY = "studio9.emailForSignIn";
 const APP_TITLE = config.appTitle || "Medical Genetics";
 
@@ -226,7 +228,9 @@ export async function runAccessGate() {
     wrap.querySelector("button")?.addEventListener("click", () => {
       studio9Session = null;
       accessGranted = false;
-      void signOut(auth).then(() => window.location.reload());
+      void signOut(auth).then(() => {
+        window.location.assign(ACCOUNT_URL);
+      });
     });
 
     const actions = document.createElement("div");
@@ -283,7 +287,10 @@ export async function runAccessGate() {
           type: "no-access",
           email: user.email || "",
           onRefresh: () => void refreshEntitlementCheck(),
-          onLogout: () => void signOut(auth).then(() => showLogin()),
+          onLogout: () =>
+            void signOut(auth).then(() => {
+              window.location.assign(ACCOUNT_URL);
+            }),
         });
         return false;
       }
@@ -296,7 +303,10 @@ export async function runAccessGate() {
         type: "no-access",
         email: user.email || "",
         onRefresh: () => void refreshEntitlementCheck(),
-        onLogout: () => void signOut(auth).then(() => showLogin()),
+        onLogout: () =>
+          void signOut(auth).then(() => {
+            window.location.assign(ACCOUNT_URL);
+          }),
       });
       return false;
     }
