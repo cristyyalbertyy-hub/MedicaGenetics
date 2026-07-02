@@ -28,6 +28,7 @@ const PROGRESS_URL =
 const STORE_URL =
   config.storeUrl || "https://medical-science-lilac.vercel.app/precos/";
 const EMAIL_FOR_SIGN_IN_KEY = "studio9.emailForSignIn";
+const APP_TITLE = config.appTitle || "Medical Genetics";
 
 function isConfigured() {
   return Boolean(
@@ -120,14 +121,14 @@ function renderGate(root, view) {
   card.className = "auth-card";
 
   if (view.type === "loading") {
-    card.innerHTML = `<h1>Medical Genetics</h1><p class="auth-hint">A verificar acesso…</p>`;
+    card.innerHTML = `<h1>${escapeHtml(APP_TITLE)}</h1><p class="auth-hint">A verificar acesso…</p>`;
     root.appendChild(card);
     return;
   }
 
   if (view.type === "unconfigured") {
     card.innerHTML =
-      `<h1>Medical Genetics</h1>` +
+      `<h1>${escapeHtml(APP_TITLE)}</h1>` +
       `<p class="form-error">Login temporariamente indisponível.</p>`;
     root.appendChild(card);
     return;
@@ -135,7 +136,7 @@ function renderGate(root, view) {
 
   if (view.type === "sent") {
     card.innerHTML =
-      `<h1>Medical Genetics</h1>` +
+      `<h1>${escapeHtml(APP_TITLE)}</h1>` +
       `<p>Enviámos um link para <strong>${escapeHtml(view.email)}</strong>.</p>` +
       `<p class="auth-hint">Abra o email e clique no link para entrar.</p>` +
       `<button type="button" class="btn btn-secondary" data-action="back">Usar outro email</button>`;
@@ -146,7 +147,7 @@ function renderGate(root, view) {
 
   if (view.type === "no-access") {
     card.innerHTML =
-      `<h1>Medical Genetics</h1>` +
+      `<h1>${escapeHtml(APP_TITLE)}</h1>` +
       `<p class="auth-hint">Sessão iniciada como <strong>${escapeHtml(view.email)}</strong>, mas ainda não há acesso activo a este módulo.</p>` +
       `<p class="auth-hint">Após a compra, o acesso online fica disponível durante 1 ano.</p>` +
       `<div class="auth-actions">` +
@@ -161,7 +162,7 @@ function renderGate(root, view) {
   }
 
   card.innerHTML =
-    `<h1>Medical Genetics</h1>` +
+    `<h1>${escapeHtml(APP_TITLE)}</h1>` +
     `<p class="auth-hint">Compre o módulo no site Medical Science e use o mesmo email para receber um link de acesso válido durante 1 ano.</p>` +
     `<form class="auth-form" id="auth-form">` +
     `<label><span>Email</span><input type="email" name="email" required placeholder="o email usado na compra" /></label>` +

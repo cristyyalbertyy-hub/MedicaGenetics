@@ -11,6 +11,7 @@ const cfg = {
   firebaseProjectId: env("VITE_FIREBASE_PROJECT_ID"),
   firebaseAppId: env("VITE_FIREBASE_APP_ID"),
   packageId: env("VITE_PACKAGE_ID", "genetics"),
+  appTitle: env("VITE_APP_TITLE", "Medical Genetics"),
   storeUrl: env("VITE_STORE_URL", "https://medical-science-lilac.vercel.app/precos/"),
   progressUrl: env(
     "VITE_PROGRESS_URL",
