@@ -1,5 +1,5 @@
 import { getStudio9Session } from "./auth-gate.js";
-import { recordWatchComplete, recordProgress } from "./progress-client.js";
+import { recordWatchComplete, recordProgress, progressDocId } from "./progress-client.js";
 
 const curriculum = [
   {
