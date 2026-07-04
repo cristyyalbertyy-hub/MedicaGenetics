@@ -123,7 +123,13 @@ async function trackMediaComplete() {
     );
     console.info("Progress saved:", { packageId: session.packageId, itemKey, resourceId, level });
   } catch (err) {
-    console.warn("Could not save watch progress:", err);
+    console.warn("Could not save watch progress:", {
+      id: progressDocId(session.user.uid, session.packageId, itemKey, resourceId),
+      packageId: session.packageId,
+      itemKey,
+      resourceId,
+      err,
+    });
   }
 }
 
