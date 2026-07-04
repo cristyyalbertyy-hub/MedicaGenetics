@@ -1,9 +1,6 @@
 import { getStudio9Session } from "./auth-gate.js";
 import { recordWatchComplete, recordProgress } from "./progress-client.js";
 
-const STUDENT_PROGRESS_URL =
-  "https://progress-azure-five.vercel.app/?package=genetics";
-
 const curriculum = [
   {
     id: "BG",
@@ -303,7 +300,6 @@ function renderHome() {
         </ul>
       </div>
       <p class="overview-hint">Open a coloured chapter in the menu, then choose a sub-topic.</p>
-      <p class="overview-progress">Already enrolled? <a class="progress-link progress-link--inline" href="${STUDENT_PROGRESS_URL}" target="_blank" rel="noopener noreferrer">My progress →</a></p>
       <button type="button" class="mobile-browse-btn" id="mobileBrowseBtn">Browse chapters →</button>
     </div>
   `;

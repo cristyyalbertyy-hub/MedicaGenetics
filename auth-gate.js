@@ -22,9 +22,6 @@ import {
 
 const config = window.STUDIO9_CONFIG || {};
 const PACKAGE_ID = config.packageId || "genetics";
-const PROGRESS_URL =
-  config.progressUrl ||
-  `https://progress-azure-five.vercel.app/?package=${PACKAGE_ID}`;
 const STORE_URL =
   config.storeUrl || "https://medical-science-lilac.vercel.app/precos/";
 const ACCOUNT_URL =
@@ -210,12 +207,6 @@ export async function runAccessGate() {
 
   let loginState = { error: null, submitting: false, sent: false, email: "" };
 
-  function updateProgressLinks() {
-    document.querySelectorAll(".progress-link").forEach((link) => {
-      link.href = PROGRESS_URL;
-    });
-  }
-
   function addAccountBar(email) {
     const header = document.getElementById("app-header");
     if (!header || header.querySelector(".auth-account")) return;
@@ -235,15 +226,8 @@ export async function runAccessGate() {
 
     const actions = document.createElement("div");
     actions.className = "app-header__actions";
-    const progress = header.querySelector(".progress-link--header");
-    if (progress) {
-      actions.appendChild(wrap);
-      actions.appendChild(progress);
-      progress.remove();
-      header.appendChild(actions);
-    } else {
-      header.appendChild(wrap);
-    }
+    actions.appendChild(wrap);
+    header.appendChild(actions);
   }
 
   function revealApp(user) {
@@ -256,10 +240,8 @@ export async function runAccessGate() {
       db,
       user,
       packageId: PACKAGE_ID,
-      progressUrl: PROGRESS_URL,
     };
     addAccountBar(user.email || "");
-    updateProgressLinks();
   }
 
   async function refreshEntitlementCheck() {
