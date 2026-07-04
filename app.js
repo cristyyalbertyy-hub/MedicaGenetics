@@ -114,16 +114,45 @@ async function trackMediaComplete() {
   if (resourceId !== "V" && resourceId !== "P") return;
 
   try {
-    await recordWatchComplete(
+    const level = await recordWatchComplete(
       session.db,
       session.user.uid,
       session.packageId,
       itemKey,
       resourceId,
     );
+    console.info("Progress saved:", { packageId: session.packageId, itemKey, resourceId, level });
   } catch (err) {
     console.warn("Could not save watch progress:", err);
   }
+}
+
+function attachPlaybackProgress(element, onComplete) {
+  let tracked = false;
+
+  const reset = () => {
+    tracked = false;
+  };
+
+  const completeOnce = () => {
+    if (tracked) return;
+    tracked = true;
+    void onComplete();
+  };
+
+  const maybeNearEnd = () => {
+    if (tracked) return;
+    const duration = element.duration;
+    if (!Number.isFinite(duration) || duration <= 0) return;
+    if (element.currentTime >= Math.max(0, duration - 0.75)) {
+      completeOnce();
+    }
+  };
+
+  element.addEventListener("play", reset);
+  element.addEventListener("seeking", reset);
+  element.addEventListener("ended", completeOnce);
+  element.addEventListener("timeupdate", maybeNearEnd);
 }
 
 function clearQuizKeyboardHandler() {
@@ -409,7 +438,7 @@ function loadMediaViewer(url) {
     video.setAttribute("controls", "");
     video.setAttribute("playsinline", "");
     video.src = url;
-    video.addEventListener("ended", () => void trackMediaComplete());
+    attachPlaybackProgress(video, trackMediaComplete);
     viewerEl.appendChild(video);
     return;
   }
@@ -419,7 +448,7 @@ function loadMediaViewer(url) {
     audio.className = "viewer-media";
     audio.setAttribute("controls", "");
     audio.src = url;
-    audio.addEventListener("ended", () => void trackMediaComplete());
+    attachPlaybackProgress(audio, trackMediaComplete);
     viewerEl.appendChild(audio);
     return;
   }
