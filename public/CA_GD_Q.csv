@@ -23,7 +23,7 @@ Define 'precision medicine'.,The use of an individual's unique genetic and envir
 How can genomic information facilitate more effective drug prescriptions?,By identifying polymorphisms that influence the rate of drug metabolism.
 What is a primary clinical benefit of pharmacogenetic testing?,Reducing the incidence of serious drug-related side effects.
 What does 'incomplete penetrance' imply for the interpretation of genetic test results?,The presence of a mutation does not guarantee that the individual will develop the disease.
-What is the likelihood that a woman with a $BRCA1$ mutation will develop breast cancer?,Approximately 50% to 80%.
+What is the likelihood that a woman with a BRCA1 mutation will develop breast cancer?,Approximately 50% to 80%.
 Which biological phenomenon can complicate the accuracy of cytogenetic diagnosis?,Mosaicism.
 What is a major limitation of many common mutation panels used for cystic fibrosis screening?,They lack sensitivity because they only test for the most frequent mutations.
 What is the principal aim of prenatal diagnosis?,To provide at-risk families with information to make informed reproductive choices.
@@ -56,7 +56,7 @@ What is the study of abnormal physical development called in medical genetics?,D
 Which direct diagnosis method can uncover multiple different mutations in a single gene simultaneously?,Sanger DNA sequencing (or whole-exome sequencing).
 ASO probes are typically _____ nucleotides in length.,18 to 20
 What is the purpose of percutaneous umbilical blood sampling (PUBS)?,To obtain foetal blood for rapid genetic diagnosis or treatment.
-"Diagnosis of cystic fibrosis often relies on identifying the most common mutations, such as the _____ mutation.",$\Delta F508$ (Note: implied by clinical context in Jorde's references to common CF mutations).
+"Diagnosis of cystic fibrosis often relies on identifying the most common mutations, such as the _____ mutation.",\Delta F508 (Note: implied by clinical context in Jorde's references to common CF mutations).
 "In a clinical setting, how can whole-genome data be used beyond disease diagnosis?",For forensic identification or screening for inborn errors in newborns.
 What is a major limitation regarding the 'severity' of a disease when a mutation is detected?,Detection of a mutation often reveals little about the specific severity or age of onset.
 Which method is specifically used for detecting uniparental disomy?,SNP microarrays.
@@ -66,7 +66,7 @@ Which technique allows the identification of very small chromosome deletions tha
 What is the primary benefit of recombinant clotting factor VIII?,It provides a safe and effective treatment for individuals with haemophilia A.
 Define 'genome-wide association studies' (GWAS).,Studies comparing allele frequencies at many loci between disease cases and unaffected controls.
 What information does a pedigree provide during a clinical genetic evaluation?,Documentation of family relationships and the history of the condition within the family.
-Genetic screening for $\alpha_1$-antitrypsin deficiency is considered feasible because the disease is caused by a _____ number of mutations.,limited
+Genetic screening for \alpha_1-antitrypsin deficiency is considered feasible because the disease is caused by a _____ number of mutations.,limited
 Why is 'linkage phase' critical in indirect genetic diagnosis?,It determines which specific marker allele is travelling with the disease-causing mutation in a family.
 Which method is most effective for diagnosing Prader–Willi syndrome?,FISH (or SNP microarrays).
 How can identifying mutations in familial colorectal cancer lead to metastasis prevention?,By allowing for early and frequent screening to detect tumours before they spread.

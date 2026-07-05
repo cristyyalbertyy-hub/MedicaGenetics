@@ -7,10 +7,10 @@ An individual possessing two identical alleles at a specific locus is said to be
 An individual possessing two different alleles at a specific locus is said to be _____.,Heterozygous
 What is the difference between a genotype and a phenotype?,"Genotype is the specific set of alleles an individual carries, while phenotype is the visible or functional characteristic."
 What inheritance pattern is characterised by a 'vertical' transmission of the disease phenotype through generations?,Autosomal dominant inheritance.
-"In autosomal dominant inheritance, what is the recurrence risk for the offspring of one affected heterozygote and one unaffected parent?",$50\%$ (or $\frac{1}{2}$)
+"In autosomal dominant inheritance, what is the recurrence risk for the offspring of one affected heterozygote and one unaffected parent?",50\% (or \frac{1}{2})
 "True or False: In autosomal dominant inheritance, father-to-son transmission is impossible.",False.
 What transmission pattern is typically seen in pedigrees for autosomal recessive disorders?,A horizontal pattern where the disease is observed in siblings but not usually in earlier generations.
-"In autosomal recessive inheritance, what is the recurrence risk for the children of two heterozygous carriers?",$25\%$ (or $\frac{1}{4}$)
+"In autosomal recessive inheritance, what is the recurrence risk for the children of two heterozygous carriers?",25\% (or \frac{1}{4})
 Term: Consanguinity,"Definition: The mating of blood relatives, which increases the likelihood of autosomal recessive disorders in offspring."
 How does the sex ratio of affected individuals differ between autosomal dominant and autosomal recessive inheritance?,"In both patterns, males and females are affected in roughly equal proportions."
 Why are X-linked recessive diseases much more common in males than in females?,Males are hemizygous for the X chromosome and lack a second X chromosome to mask a recessive mutation.
@@ -44,12 +44,12 @@ Term: Locus,Definition: The specific physical location of a gene on a chromosome
 The situation where a heterozygote for a recessive mutation is clinically normal but shows symptoms under extreme conditions is termed _____.,Sickle-cell trait
 Which condition is a well-known example of an X-linked recessive disorder affecting blood clotting?,Haemophilia A.
 Which disorder is an X-linked dominant condition primarily seen in females because it is often lethal in males?,Incontinentia pigmenti type 1.
-A single-nucleotide polymorphism (SNP) is a base-pair change present in at least _____% of the population.,$1\%$
-Which autosomal dominant disorder is caused by mutations in the $FGFR3$ gene on chromosome $4p$?,Achondroplasia
+A single-nucleotide polymorphism (SNP) is a base-pair change present in at least _____% of the population.,1\%
+Which autosomal dominant disorder is caused by mutations in the FGFR3 gene on chromosome 4p?,Achondroplasia
 What is the clinical consequence of 'anticipation' in genetic diseases?,An earlier age-of-onset of the disease in more recent generations of a family.
 How many transcriptionally active copies of an 'imprinted' gene does a normal individual have?,Only one.
 Term: STR (Short Tandem Repeat),Definition: A polymorphic DNA sequence containing multiple repeated short sequences used as markers in genetic mapping.
-"In autosomal dominant inheritance, what is the recurrence risk for the offspring if both parents are affected heterozygotes?",$75\%$ (or $\frac{3}{4}$)
+"In autosomal dominant inheritance, what is the recurrence risk for the offspring if both parents are affected heterozygotes?",75\% (or \frac{3}{4})
 Which enzyme deficiency causes the autosomal recessive form of albinism described by Jorde?,Tyrosinase
 "True or False: If neither parent has an autosomal dominant trait, none of their children will have it.",True (assuming no new mutations or germline mosaicism).
 What is the significance of 'haplotype blocks' in human genetics?,They are segments of nucleotide sequence passed down intact from ancestors that help identify disease-associated alleles.
@@ -57,7 +57,7 @@ Which X-linked recessive disorder is characterised by progressive muscle degener
 What is a 'genetic map'?,A representation showing the order of genes on a chromosome based on crossover frequencies.
 The specific set of alleles forming the genome of an individual is their _____.,Genotype
 "In the context of monogenic disorders, what does 'loss-of-function' usually describe?",A mutation that prevents the synthesis of a mature protein or results in a non-functional product.
-Approximately how many autosomal genes are listed in the online compendium of Mendelian Inheritance in Man?,"Nearly $21,000$."
+Approximately how many autosomal genes are listed in the online compendium of Mendelian Inheritance in Man?,"Nearly 21,000."
 Which type of mutation results in the alteration of a single nucleotide to a different nucleotide?,Point mutation.
 How many alleles of each gene does a haploid gamete contain?,One.
 The increased frequency of a specific mutation in a subpopulation that arose from a small number of individuals is known as the _____.,Founder effect
