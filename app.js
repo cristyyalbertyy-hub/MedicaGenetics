@@ -442,7 +442,9 @@ function loadMediaViewer(url) {
     const video = document.createElement("video");
     video.className = "viewer-media";
     video.setAttribute("controls", "");
+    video.setAttribute("controlsList", "nodownload");
     video.setAttribute("playsinline", "");
+    video.addEventListener("contextmenu", (event) => event.preventDefault());
     video.src = url;
     attachPlaybackProgress(video, trackMediaComplete);
     viewerEl.appendChild(video);
@@ -453,6 +455,8 @@ function loadMediaViewer(url) {
     const audio = document.createElement("audio");
     audio.className = "viewer-media";
     audio.setAttribute("controls", "");
+    audio.setAttribute("controlsList", "nodownload");
+    audio.addEventListener("contextmenu", (event) => event.preventDefault());
     audio.src = url;
     attachPlaybackProgress(audio, trackMediaComplete);
     viewerEl.appendChild(audio);
