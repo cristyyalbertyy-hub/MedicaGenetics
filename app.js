@@ -3,6 +3,11 @@ import { recordWatchComplete, recordProgress, progressDocId } from "./progress-c
 
 const OVERVIEW_IMAGE = "public/GeneticsA.png";
 
+/** Optional HTML shown below the infographic image for a sub-topic. */
+const INFOGRAPHIC_EXTRAS = {
+  "BG/T": "public/basic_genetics_glossary.html",
+};
+
 const curriculum = [
   {
     id: "BG",
@@ -441,6 +446,29 @@ async function loadQuestionsCsv(url) {
   renderInlineQuiz(items);
 }
 
+function loadInfographicViewer(imageUrl, extraHtmlUrl) {
+  viewerEl.replaceChildren();
+
+  const stack = document.createElement("div");
+  stack.className = "viewer-infographic-stack";
+
+  const img = document.createElement("img");
+  img.className = "viewer-img";
+  img.src = imageUrl;
+  img.alt = "Infographic";
+  stack.appendChild(img);
+
+  if (extraHtmlUrl) {
+    const iframe = document.createElement("iframe");
+    iframe.className = "viewer-frame viewer-frame--supplement";
+    iframe.title = "Glossary";
+    iframe.src = extraHtmlUrl;
+    stack.appendChild(iframe);
+  }
+
+  viewerEl.appendChild(stack);
+}
+
 function loadMediaViewer(url) {
   const ext = extensionFromUrl(url);
   viewerEl.replaceChildren();
@@ -514,6 +542,12 @@ async function loadSelectedResource() {
 
   if (state.resourceId === "Q" && url.endsWith(".csv")) {
     await loadQuestionsCsv(url);
+    return;
+  }
+
+  if (state.resourceId === "I") {
+    const extra = INFOGRAPHIC_EXTRAS[`${state.chapterId}/${state.subchapterId}`] ?? null;
+    loadInfographicViewer(url, extra);
     return;
   }
 

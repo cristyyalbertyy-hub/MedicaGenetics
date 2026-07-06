@@ -284,6 +284,18 @@ button { font: inherit; cursor: pointer; }
   display: block;
 }
 
+.viewer-infographic-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.viewer-frame--supplement {
+  min-height: 720px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+}
+
 .overview-panel {
   display: flex;
   flex-direction: column;

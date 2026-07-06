@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Basic Genetics — A First-Contact Glossary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #F7F4EC;
+    --paper: #FCFAF4;
+    --ink: #1F2430;
+    --navy: #1B2A4A;
+    --teal: #2F7A78;
+    --coral: #C1543F;
+    --gold: #B9862E;
+    --slate: #5C6B7A;
+    --line: #DCD4C1;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .sheet{
+    max-width:980px;
+    margin:0 auto;
+    padding:56px 48px 72px;
+  }
+
+  /* ---------- HEADER ---------- */
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;height:1px;
+    background:var(--teal);
+    display:inline-block;
+  }
+
+  h1{
+    font-family:'Fraunces',serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:44px;
+    line-height:1.08;
+    letter-spacing:-.01em;
+    margin:14px 0 10px;
+    color:var(--navy);
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--coral);
+  }
+  .subtitle{
+    font-size:16.5px;
+    color:var(--slate);
+    max-width:640px;
+    margin:0 0 36px;
+  }
+
+  /* ---------- HERO: THE CASCADE ---------- */
+  .cascade{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:30px 34px 26px;
+    margin-bottom:44px;
+    position:relative;
+  }
+  .cascade-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--slate);
+    margin-bottom:18px;
+  }
+  .cascade-row{
+    display:flex;
+    align-items:stretch;
+    gap:0;
+    flex-wrap:wrap;
+  }
+  .cascade-node{
+    flex:1;
+    min-width:150px;
+    padding:14px 16px;
+    position:relative;
+  }
+  .cascade-node .term{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--navy);
+  }
+  .cascade-node .note{
+    font-size:12.5px;
+    color:var(--slate);
+    margin-top:4px;
+    line-height:1.35;
+  }
+  .cascade-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--coral);
+    font-size:18px;
+    padding:0 4px;
+    flex:0 0 auto;
+  }
+
+  /* ---------- CATEGORY SECTIONS ---------- */
+  .category{
+    margin-bottom:40px;
+  }
+  .cat-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:6px;
+  }
+  .cat-dot{
+    width:10px;height:10px;
+    border-radius:50%;
+    flex:0 0 auto;
+  }
+  .cat-title{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:22px;
+    color:var(--navy);
+  }
+  .cat-sub{
+    font-size:13px;
+    color:var(--slate);
+    margin:0 0 18px 22px;
+  }
+
+  .term-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+  .term-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:3px solid var(--cat-color, var(--teal));
+    border-radius:3px;
+    padding:15px 18px;
+  }
+  .term-card .term{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--ink);
+    margin-bottom:5px;
+    display:block;
+  }
+  .term-card .def{
+    font-size:13.8px;
+    color:#3A3F4A;
+    line-height:1.48;
+  }
+  .term-card .def b{
+    color:var(--ink);
+    font-weight:600;
+  }
+
+  .cat-building .cat-dot{background:var(--teal);}
+  .cat-building .term-card{--cat-color:var(--teal);}
+  .cat-identity .cat-dot{background:var(--gold);}
+  .cat-identity .term-card{--cat-color:var(--gold);}
+  .cat-inherit .cat-dot{background:var(--coral);}
+  .cat-inherit .term-card{--cat-color:var(--coral);}
+  .cat-chromo .cat-dot{background:var(--slate);}
+  .cat-chromo .term-card{--cat-color:var(--slate);}
+
+  /* ---------- PUNNETT SIGNATURE ---------- */
+  .punnett-wrap{
+    display:flex;
+    gap:28px;
+    align-items:center;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:24px 26px;
+    margin:20px 0 24px;
+  }
+  .punnett-wrap svg{flex:0 0 auto;}
+  .punnett-caption{
+    font-size:13.6px;
+    color:#3A3F4A;
+    line-height:1.55;
+  }
+  .punnett-caption .cap-title{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--slate);
+    margin-bottom:8px;
+    display:block;
+  }
+  .legend-swatch{
+    display:inline-block;
+    width:9px;height:9px;
+    border-radius:2px;
+    margin-right:5px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .footer{
+    margin-top:48px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .footer .tip{
+    font-size:13px;
+    color:var(--slate);
+    max-width:600px;
+  }
+  .footer .tip b{color:var(--ink);}
+  .footer .mark{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--slate);
+    letter-spacing:.08em;
+  }
+
+  @media (max-width:720px){
+    .sheet{padding:36px 22px 56px;}
+    h1{font-size:32px;}
+    .term-grid{grid-template-columns:1fr;}
+    .cascade-row{flex-direction:column;}
+    .cascade-arrow{transform:rotate(90deg);padding:4px 0;}
+    .punnett-wrap{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="eyebrow">First contact · Basic Genetics</div>
+  <h1>The vocabulary of <em>heredity</em></h1>
+  <p class="subtitle">Twenty terms every medical science student meets in week one — organized the way the concepts actually build on each other, from the DNA molecule up to the traits you can observe in a patient.</p>
+
+  <!-- HERO CASCADE -->
+  <div class="cascade">
+    <div class="cascade-label">How the core terms connect</div>
+    <div class="cascade-row">
+      <div class="cascade-node">
+        <div class="term">DNA</div>
+        <div class="note">the molecule storing the code</div>
+      </div>
+      <div class="cascade-arrow">→</div>
+      <div class="cascade-node">
+        <div class="term">GENE</div>
+        <div class="note">a segment of that code</div>
+      </div>
+      <div class="cascade-arrow">→</div>
+      <div class="cascade-node">
+        <div class="term">ALLELE</div>
+        <div class="note">a version of the gene</div>
+      </div>
+      <div class="cascade-arrow">→</div>
+      <div class="cascade-node">
+        <div class="term">GENOTYPE</div>
+        <div class="note">the pair of alleles carried</div>
+      </div>
+      <div class="cascade-arrow">→</div>
+      <div class="cascade-node">
+        <div class="term">PHENOTYPE</div>
+        <div class="note">what is actually observed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 1: BUILDING BLOCKS -->
+  <div class="category cat-building">
+    <div class="cat-head"><span class="cat-dot"></span><span class="cat-title">Building blocks</span></div>
+    <p class="cat-sub">Where the hereditary material physically lives</p>
+    <div class="term-grid">
+      <div class="term-card">
+        <span class="term">DNA</span>
+        <div class="def">Deoxyribonucleic acid — the molecule that stores hereditary information as a sequence of four bases (<b>A, T, C, G</b>), organized as a double helix.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Gene</span>
+        <div class="def">A segment of DNA containing the instructions to build a specific protein or functional RNA. The basic unit of heredity.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Chromosome</span>
+        <div class="def">A tightly coiled structure of DNA and protein that packages genes. Humans have <b>46</b>, arranged in <b>23 pairs</b>.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Chromatin</span>
+        <div class="def">DNA wound around histone proteins, forming chromosomes. It condenses or relaxes depending on the cell cycle stage.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Locus</span>
+        <div class="def">The specific physical address of a gene on a chromosome. Plural: <b>loci</b>.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Genome</span>
+        <div class="def">The complete set of genetic material of an organism — every gene, on every chromosome, together.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 2: GENETIC IDENTITY -->
+  <div class="category cat-identity">
+    <div class="cat-head"><span class="cat-dot"></span><span class="cat-title">Genetic identity</span></div>
+    <p class="cat-sub">How variation is described in an individual</p>
+    <div class="term-grid">
+      <div class="term-card">
+        <span class="term">Allele</span>
+        <div class="def">One of two or more alternative versions of a gene, arising from sequence variation at the same locus.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Genotype</span>
+        <div class="def">The specific combination of alleles an individual carries for a gene — e.g. <b>AA</b>, <b>Aa</b>, or <b>aa</b>.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Phenotype</span>
+        <div class="def">The observable physical, biochemical, or behavioral expression of a genotype, also shaped by environment.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Homozygous</span>
+        <div class="def">Carrying two identical alleles for a given gene, e.g. <b>AA</b> or <b>aa</b>.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Heterozygous</span>
+        <div class="def">Carrying two different alleles for a given gene, e.g. <b>Aa</b>.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Wild type</span>
+        <div class="def">The typical, most common allele or phenotype in a population — used as the reference point for comparison.</div>
+      </div>
+    </div>
+
+    <div class="punnett-wrap">
+      <svg width="150" height="150" viewBox="0 0 150 150">
+        <!-- axis labels -->
+        <text x="45" y="14" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#C1543F" text-anchor="middle">A</text>
+        <text x="105" y="14" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#B9862E" text-anchor="middle">a</text>
+        <text x="16" y="52" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#C1543F" text-anchor="middle">A</text>
+        <text x="16" y="112" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#B9862E" text-anchor="middle">a</text>
+
+        <g transform="translate(30,24)">
+          <rect x="0" y="0" width="60" height="60" fill="#F4E3DD" stroke="#DCD4C1"/>
+          <text x="30" y="35" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="600" fill="#1F2430" text-anchor="middle">AA</text>
+
+          <rect x="60" y="0" width="60" height="60" fill="#F6E9D8" stroke="#DCD4C1"/>
+          <text x="90" y="35" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="600" fill="#1F2430" text-anchor="middle">Aa</text>
+
+          <rect x="0" y="60" width="60" height="60" fill="#F6E9D8" stroke="#DCD4C1"/>
+          <text x="30" y="95" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="600" fill="#1F2430" text-anchor="middle">Aa</text>
+
+          <rect x="60" y="60" width="60" height="60" fill="#EFE6CE" stroke="#DCD4C1"/>
+          <text x="90" y="95" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="600" fill="#1F2430" text-anchor="middle">aa</text>
+        </g>
+      </svg>
+      <div class="punnett-caption">
+        <span class="cap-title">Reading a Punnett square</span>
+        Two heterozygous parents (<b>Aa</b> × <b>Aa</b>) produce offspring in a <b>1:2:1</b> genotype ratio.
+        <span class="legend-swatch" style="background:#C1543F;"></span>A = dominant allele &nbsp;
+        <span class="legend-swatch" style="background:#B9862E;"></span>a = recessive allele.
+        Three of the four boxes carry at least one <b>A</b>, so the dominant phenotype appears in <b>3 out of 4</b> offspring — only the <b>aa</b> box shows the recessive phenotype.
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 3: INHERITANCE PATTERNS -->
+  <div class="category cat-inherit">
+    <div class="cat-head"><span class="cat-dot"></span><span class="cat-title">Inheritance patterns</span></div>
+    <p class="cat-sub">Why one allele can outweigh another</p>
+    <div class="term-grid">
+      <div class="term-card">
+        <span class="term">Dominant</span>
+        <div class="def">An allele that produces its phenotype even with only one copy present, masking the recessive allele in a heterozygote.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Recessive</span>
+        <div class="def">An allele whose phenotype appears only when two copies are present — it is masked by a dominant allele.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Carrier</span>
+        <div class="def">A heterozygous individual for a recessive allele. They do not show the trait but can pass it to their offspring.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Trait</span>
+        <div class="def">Any observable characteristic of an organism, resulting from genotype, environment, or both.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 4: CHROMOSOMES & VARIATION -->
+  <div class="category cat-chromo">
+    <div class="cat-head"><span class="cat-dot"></span><span class="cat-title">Chromosomes &amp; variation</span></div>
+    <p class="cat-sub">Zooming back out to the whole karyotype</p>
+    <div class="term-grid">
+      <div class="term-card">
+        <span class="term">Autosome</span>
+        <div class="def">Any chromosome that is not a sex chromosome. Humans have <b>22 pairs</b> of autosomes.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Sex chromosome</span>
+        <div class="def">The chromosome pair — <b>X</b> and <b>Y</b> in humans — that determines biological sex.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Karyotype</span>
+        <div class="def">A visual profile of an individual's full set of chromosomes, arranged by size and shape, used to detect structural or numerical abnormalities.</div>
+      </div>
+      <div class="term-card">
+        <span class="term">Mutation</span>
+        <div class="def">A permanent change in a DNA sequence. It can create new alleles, and may or may not affect the phenotype.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p class="tip"><b>Study tip:</b> keep the cascade at the top in mind — most first-year confusion comes from mixing up genotype (the alleles carried) with phenotype (what is actually expressed).</p>
+    <span class="mark">BASIC GENETICS · GLOSSARY 01</span>
+  </div>
+
+</div>
+</body>
+</html>
