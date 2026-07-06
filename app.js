@@ -1,7 +1,7 @@
 import { getStudio9Session } from "./auth-gate.js";
 import { recordWatchComplete, recordProgress, progressDocId } from "./progress-client.js";
 
-const OVERVIEW_IMAGE = "public/Genetics.png";
+const OVERVIEW_IMAGE = "public/GeneticsA.png";
 
 const curriculum = [
   {
