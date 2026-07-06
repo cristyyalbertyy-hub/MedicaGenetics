@@ -1,6 +1,8 @@
 import { getStudio9Session } from "./auth-gate.js";
 import { recordWatchComplete, recordProgress, progressDocId } from "./progress-client.js";
 
+const OVERVIEW_IMAGE = "public/Genetics.png";
+
 const curriculum = [
   {
     id: "BG",
@@ -334,6 +336,11 @@ function renderHome() {
             .join("")}
         </ul>
       </div>
+      <img
+        class="overview-infographic"
+        src="${OVERVIEW_IMAGE}"
+        alt="Medical Genetics — course overview"
+      />
       <p class="overview-hint">Open a coloured chapter in the menu, then choose a sub-topic.</p>
       <button type="button" class="mobile-browse-btn" id="mobileBrowseBtn">Browse chapters →</button>
     </div>
