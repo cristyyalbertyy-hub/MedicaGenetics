@@ -75,14 +75,26 @@ async function trySessionHandoff(auth) {
   const params = new URLSearchParams(window.location.search);
   const token = params.get("studio9_handoff");
   if (!token) return;
+  const openPackage = params.get("studio9_open");
   sessionStorage.setItem("studio9_from_conta", "1");
+  if (openPackage) {
+    sessionStorage.setItem("studio9_open_package", openPackage);
+  }
   await signInWithCustomToken(auth, token);
   params.delete("studio9_handoff");
+  params.delete("studio9_open");
   const rest = params.toString();
   window.history.replaceState(
     null,
     "",
     `${window.location.pathname}${rest ? `?${rest}` : ""}`,
+  );
+}
+
+function openedFromContaWithPackage() {
+  return (
+    sessionStorage.getItem("studio9_from_conta") === "1" &&
+    sessionStorage.getItem("studio9_open_package") === PACKAGE_ID
   );
 }
 
@@ -334,10 +346,18 @@ export async function runAccessGate() {
     await grantAccessIfEntitled(currentUser);
   }
 
-  async function grantAccessIfEntitled(user) {
+  async function grantAccessIfEntitled(user, skipFirestore = false) {
     if (!user) return false;
     if (accessGranted) return true;
     renderGate(gateEl, { type: "loading" });
+
+    if (skipFirestore || openedFromContaWithPackage()) {
+      sessionStorage.removeItem("studio9_from_conta");
+      sessionStorage.removeItem("studio9_open_package");
+      revealApp(user);
+      return true;
+    }
+
     try {
       const entitlement = await withTimeout(
         fetchActiveEntitlement(db, user.uid),
@@ -428,7 +448,16 @@ export async function runAccessGate() {
     });
   }
 
-  void bootstrap();
+  await bootstrap();
+  if (handoffFailed) return false;
+
+  const userAfterBootstrap = auth.currentUser;
+  if (userAfterBootstrap) {
+    return grantAccessIfEntitled(
+      userAfterBootstrap,
+      hasHandoff || openedFromContaWithPackage(),
+    );
+  }
 
   return new Promise((resolve) => {
     let settled = false;
