@@ -116,7 +116,30 @@ async function fetchActiveEntitlementFromFirestore(db, userId) {
   return parseActiveEntitlement(directSnap.data());
 }
 
-async function resolveEntitlement(user, db) {
+async function resolveEntitlementFromHandoffClaims(user) {
+  await withTimeout(user.getIdToken(true), 8_000, "getIdToken");
+  const tokenResult = await withTimeout(user.getIdTokenResult(), 4_000, "getIdTokenResult");
+  const packages = tokenResult.claims?.studio9_packages;
+  if (Array.isArray(packages) && packages.includes(PACKAGE_ID)) {
+    return { package_id: PACKAGE_ID, user_id: user.uid };
+  }
+  return null;
+}
+
+async function resolveEntitlement(user, db, preferHandoffClaims = false) {
+  if (preferHandoffClaims) {
+    try {
+      const fromClaims = await withTimeout(
+        resolveEntitlementFromHandoffClaims(user),
+        10_000,
+        "handoff-claims",
+      );
+      if (fromClaims) return fromClaims;
+    } catch {
+      /* fall through to shared checks */
+    }
+  }
+
   const results = await Promise.allSettled([
     withTimeout(
       fetchActiveEntitlementFromFirestore(db, user.uid),
@@ -339,12 +362,12 @@ export async function runAccessGate() {
     await grantAccessIfEntitled(currentUser);
   }
 
-  async function grantAccessIfEntitled(user) {
+  async function grantAccessIfEntitled(user, preferHandoffClaims = false) {
     if (!user) return false;
     if (accessGranted) return true;
     renderGate(gateEl, { type: "loading" });
     try {
-      const entitlement = await resolveEntitlement(user, db);
+      const entitlement = await resolveEntitlement(user, db, preferHandoffClaims);
       if (!entitlement) {
         accessGranted = false;
         shellEl.hidden = true;
@@ -460,7 +483,7 @@ export async function runAccessGate() {
 
     if (hasHandoff) {
       const handoffUser = auth.currentUser;
-      if (handoffUser) return grantAccessIfEntitled(handoffUser);
+      if (handoffUser) return grantAccessIfEntitled(handoffUser, true);
       showLogin();
       return false;
     }
