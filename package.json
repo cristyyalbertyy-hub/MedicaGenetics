@@ -1,7 +1,14 @@
 {
   "name": "medica-genetics",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "node scripts/write-config.js"
+    "build": "node scripts/write-config.cjs && node scripts/build.mjs"
+  },
+  "dependencies": {
+    "firebase": "^12.15.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
   }
 }

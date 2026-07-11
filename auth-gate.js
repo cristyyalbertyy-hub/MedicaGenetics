@@ -1,4 +1,4 @@
-import { initializeApp } from "https://esm.sh/firebase@12.15.0/app";
+import { initializeApp } from "firebase/app";
 import {
   getAuth,
   onAuthStateChanged,
@@ -9,7 +9,7 @@ import {
   signInWithCustomToken,
   setPersistence,
   browserLocalPersistence,
-} from "https://esm.sh/firebase@12.15.0/auth";
+} from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -18,7 +18,7 @@ import {
   getDocs,
   doc,
   getDoc,
-} from "https://esm.sh/firebase@12.15.0/firestore";
+} from "firebase/firestore";
 
 const config = window.STUDIO9_CONFIG || {};
 const PACKAGE_ID = config.packageId || "genetics";
@@ -69,33 +69,6 @@ function cleanEmailLinkFromUrl() {
   url.searchParams.delete("mode");
   url.searchParams.delete("lang");
   window.history.replaceState(null, "", url.pathname + url.search);
-}
-
-async function trySessionHandoff(auth) {
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("studio9_handoff");
-  if (!token) return;
-  const openPackage = params.get("studio9_open");
-  sessionStorage.setItem("studio9_from_conta", "1");
-  if (openPackage) {
-    sessionStorage.setItem("studio9_open_package", openPackage);
-  }
-  await signInWithCustomToken(auth, token);
-  params.delete("studio9_handoff");
-  params.delete("studio9_open");
-  const rest = params.toString();
-  window.history.replaceState(
-    null,
-    "",
-    `${window.location.pathname}${rest ? `?${rest}` : ""}`,
-  );
-}
-
-function openedFromContaWithPackage() {
-  return (
-    sessionStorage.getItem("studio9_from_conta") === "1" &&
-    sessionStorage.getItem("studio9_open_package") === PACKAGE_ID
-  );
 }
 
 /** Same entitlement lookup pattern as Medical Biology. */
@@ -234,7 +207,9 @@ export async function runAccessGate() {
   shellEl.hidden = true;
   gateEl.hidden = true;
 
-  const hasHandoff = new URLSearchParams(window.location.search).has("studio9_handoff");
+  const params = new URLSearchParams(window.location.search);
+  const handoffToken = params.get("studio9_handoff");
+  const hasHandoff = Boolean(handoffToken);
   renderGate(gateEl, { type: "loading" });
 
   if (!isConfigured()) {
@@ -249,51 +224,8 @@ export async function runAccessGate() {
     appId: config.firebaseAppId,
   });
   const auth = getAuth(app);
-  const db = getFirestore(app);
 
   let loginState = { error: null, submitting: false, sent: false, email: "" };
-  let handoffFailed = false;
-
-  async function bootstrap() {
-    try {
-      await withTimeout(
-        setPersistence(auth, browserLocalPersistence),
-        10_000,
-        "persistence",
-      );
-
-      if (hasHandoff) {
-        await withTimeout(trySessionHandoff(auth), 15_000, "handoff");
-      }
-
-      if (isSignInWithEmailLink(auth, window.location.href)) {
-        let email = window.localStorage.getItem(EMAIL_FOR_SIGN_IN_KEY);
-        if (!email) {
-          email = window.prompt("Confirme o email usado para pedir o link de acesso");
-        }
-        if (email) {
-          await signInWithEmailLink(auth, email, window.location.href);
-          window.localStorage.removeItem(EMAIL_FOR_SIGN_IN_KEY);
-          cleanEmailLinkFromUrl();
-        }
-      }
-    } catch (error) {
-      if (hasHandoff) {
-        handoffFailed = true;
-        const message =
-          error instanceof Error ? error.message : "Não foi possível iniciar sessão.";
-        renderGate(gateEl, {
-          type: "handoff-error",
-          message:
-            message.includes("timeout") ||
-            message.includes("custom-token") ||
-            message.includes("expired")
-              ? "A ligação expirou. Volte a abrir o Genetics pela Minha conta."
-              : message,
-        });
-      }
-    }
-  }
 
   function addAccountBar(email) {
     const header = document.getElementById("app-header");
@@ -308,6 +240,7 @@ export async function runAccessGate() {
       studio9Session = null;
       accessGranted = false;
       sessionStorage.removeItem("studio9_from_conta");
+      sessionStorage.removeItem("studio9_open_package");
       void signOut(auth).then(() => {
         window.location.assign(ACCOUNT_URL);
       });
@@ -319,7 +252,7 @@ export async function runAccessGate() {
     header.appendChild(actions);
   }
 
-  function revealApp(user) {
+  function revealApp(user, db) {
     accessGranted = true;
     gateEl.hidden = true;
     gateEl.replaceChildren();
@@ -331,6 +264,67 @@ export async function runAccessGate() {
       packageId: PACKAGE_ID,
     };
     addAccountBar(user.email || "");
+  }
+
+  if (hasHandoff) {
+    try {
+      await withTimeout(
+        signInWithCustomToken(auth, handoffToken),
+        15_000,
+        "handoff",
+      );
+      params.delete("studio9_handoff");
+      params.delete("studio9_open");
+      const rest = params.toString();
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${rest ? `?${rest}` : ""}`,
+      );
+
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error("Sessão inválida após handoff.");
+      }
+
+      revealApp(user, getFirestore(app));
+      return true;
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Não foi possível iniciar sessão.";
+      renderGate(gateEl, {
+        type: "handoff-error",
+        message:
+          message.includes("timeout") ||
+          message.includes("custom-token") ||
+          message.includes("expired")
+            ? "A ligação expirou. Volte a abrir o Genetics pela Minha conta."
+            : message,
+      });
+      return false;
+    }
+  }
+
+  const db = getFirestore(app);
+
+  async function bootstrap() {
+    await withTimeout(
+      setPersistence(auth, browserLocalPersistence),
+      10_000,
+      "persistence",
+    ).catch(() => undefined);
+
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      let email = window.localStorage.getItem(EMAIL_FOR_SIGN_IN_KEY);
+      if (!email) {
+        email = window.prompt("Confirme o email usado para pedir o link de acesso");
+      }
+      if (email) {
+        await signInWithEmailLink(auth, email, window.location.href);
+        window.localStorage.removeItem(EMAIL_FOR_SIGN_IN_KEY);
+        cleanEmailLinkFromUrl();
+      }
+    }
   }
 
   async function refreshEntitlementCheck() {
@@ -346,17 +340,10 @@ export async function runAccessGate() {
     await grantAccessIfEntitled(currentUser);
   }
 
-  async function grantAccessIfEntitled(user, skipFirestore = false) {
+  async function grantAccessIfEntitled(user) {
     if (!user) return false;
     if (accessGranted) return true;
     renderGate(gateEl, { type: "loading" });
-
-    if (skipFirestore || openedFromContaWithPackage()) {
-      sessionStorage.removeItem("studio9_from_conta");
-      sessionStorage.removeItem("studio9_open_package");
-      revealApp(user);
-      return true;
-    }
 
     try {
       const entitlement = await withTimeout(
@@ -378,8 +365,7 @@ export async function runAccessGate() {
         });
         return false;
       }
-      sessionStorage.removeItem("studio9_from_conta");
-      revealApp(user);
+      revealApp(user, db);
       return true;
     } catch (error) {
       accessGranted = false;
@@ -449,21 +435,17 @@ export async function runAccessGate() {
   }
 
   await bootstrap();
-  if (handoffFailed) return false;
 
   const userAfterBootstrap = auth.currentUser;
   if (userAfterBootstrap) {
-    return grantAccessIfEntitled(
-      userAfterBootstrap,
-      hasHandoff || openedFromContaWithPackage(),
-    );
+    return grantAccessIfEntitled(userAfterBootstrap);
   }
 
   return new Promise((resolve) => {
     let settled = false;
 
     const gateTimer = setTimeout(() => {
-      if (settled || accessGranted || handoffFailed) return;
+      if (settled || accessGranted) return;
       settled = true;
       unsubscribe();
       renderGate(gateEl, {
@@ -476,7 +458,7 @@ export async function runAccessGate() {
     }, GATE_TIMEOUT_MS);
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (accessGranted || settled || handoffFailed) return;
+      if (accessGranted || settled) return;
 
       if (user) {
         void grantAccessIfEntitled(user).then((ok) => {
@@ -489,13 +471,11 @@ export async function runAccessGate() {
         return;
       }
 
-      if (!hasHandoff) {
-        settled = true;
-        clearTimeout(gateTimer);
-        unsubscribe();
-        showLogin();
-        resolve(false);
-      }
+      settled = true;
+      clearTimeout(gateTimer);
+      unsubscribe();
+      showLogin();
+      resolve(false);
     });
   });
 }

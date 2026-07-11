@@ -1,9 +1,9 @@
 import { runAccessGate } from "./auth-gate.js";
+import { init } from "./app.js";
 
 const allowed = await runAccessGate();
 if (allowed) {
   try {
-    const { init } = await import("./app.js");
     init();
   } catch (error) {
     const gateEl = document.getElementById("auth-gate");
