@@ -1,7 +1,6 @@
 import { initializeApp } from "https://esm.sh/firebase@12.15.0/app";
 import {
   getAuth,
-  onAuthStateChanged,
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
@@ -23,9 +22,10 @@ import {
 const config = window.STUDIO9_CONFIG || {};
 const PACKAGE_ID = config.packageId || "genetics";
 const STORE_URL =
-  config.storeUrl || "https://medical-science-lilac.vercel.app/precos/";
+  config.storeUrl || "https://studio9medical.com/precos/";
 const ACCOUNT_URL =
-  config.accountUrl || "https://medical-science-lilac.vercel.app/conta/";
+  config.accountUrl || "https://studio9medical.com/conta/";
+const SITE_ORIGIN = new URL(ACCOUNT_URL).origin;
 const EMAIL_FOR_SIGN_IN_KEY = "studio9.emailForSignIn";
 const APP_TITLE = config.appTitle || "Medical Genetics";
 
@@ -56,6 +56,7 @@ async function trySessionHandoff(auth) {
   const params = new URLSearchParams(window.location.search);
   const token = params.get("studio9_handoff");
   if (!token) return;
+  await signOut(auth).catch(() => undefined);
   await signInWithCustomToken(auth, token);
   params.delete("studio9_handoff");
   const rest = params.toString();
@@ -64,6 +65,25 @@ async function trySessionHandoff(auth) {
     "",
     `${window.location.pathname}${rest ? `?${rest}` : ""}`,
   );
+}
+
+async function fetchActiveEntitlementViaApi(user) {
+  const idToken = await user.getIdToken();
+  const res = await fetch(`${SITE_ORIGIN}/api/my-entitlements`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id_token: idToken }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(
+      typeof data.error === "string" ? data.error : "Erro ao verificar acesso.",
+    );
+  }
+  if ((data.package_ids ?? []).includes(PACKAGE_ID)) {
+    return { package_id: PACKAGE_ID, user_id: user.uid };
+  }
+  return null;
 }
 
 async function fetchActiveEntitlement(db, userId) {
@@ -144,6 +164,17 @@ function renderGate(root, view) {
     return;
   }
 
+  if (view.type === "handoff-error") {
+    card.innerHTML =
+      `<h1>${escapeHtml(APP_TITLE)}</h1>` +
+      `<p class="form-error">${escapeHtml(view.message)}</p>` +
+      `<div class="auth-actions">` +
+      `<a class="btn btn-primary" href="${escapeHtml(ACCOUNT_URL)}">Abrir pela Minha conta</a>` +
+      `</div>`;
+    root.appendChild(card);
+    return;
+  }
+
   if (view.type === "no-access") {
     card.innerHTML =
       `<h1>${escapeHtml(APP_TITLE)}</h1>` +
@@ -168,7 +199,7 @@ function renderGate(root, view) {
     (view.error ? `<p class="form-error" role="alert">${escapeHtml(view.error)}</p>` : "") +
     `<button type="submit" class="btn btn-primary">${view.submitting ? "A enviar…" : "Enviar link de acesso"}</button>` +
     `</form>` +
-    `<p class="demo-note">Recomendado: <a href="https://medical-science-lilac.vercel.app/conta/">Entrar pela conta Studio9</a> (1 magic link para todos os pacotes).</p>` +
+    `<p class="demo-note">Recomendado: <a href="${escapeHtml(ACCOUNT_URL)}">Entrar pela conta Studio9</a> (Google ou link por email).</p>` +
     `<p class="demo-note">Ainda não comprou? <a href="${escapeHtml(STORE_URL)}" target="_blank" rel="noopener noreferrer">Ver preços e planos</a></p>`;
 
   const form = card.querySelector("#auth-form");
@@ -185,9 +216,7 @@ export async function runAccessGate() {
   gateEl.hidden = true;
 
   const hasHandoff = new URLSearchParams(window.location.search).has("studio9_handoff");
-  if (!hasHandoff) {
-    renderGate(gateEl, { type: "loading" });
-  }
+  renderGate(gateEl, { type: "loading" });
 
   if (!isConfigured()) {
     renderGate(gateEl, { type: "unconfigured" });
@@ -203,7 +232,23 @@ export async function runAccessGate() {
   const auth = getAuth(app);
   const db = getFirestore(app);
   await setPersistence(auth, browserLocalPersistence);
-  await trySessionHandoff(auth).catch(() => undefined);
+
+  if (hasHandoff) {
+    try {
+      await trySessionHandoff(auth);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Não foi possível iniciar sessão.";
+      renderGate(gateEl, {
+        type: "handoff-error",
+        message:
+          message.includes("custom-token") || message.includes("expired")
+            ? "A ligação expirou. Volte a abrir o Genetics pela Minha conta."
+            : message,
+      });
+      return false;
+    }
+  }
 
   let loginState = { error: null, submitting: false, sent: false, email: "" };
 
@@ -260,8 +305,16 @@ export async function runAccessGate() {
   async function grantAccessIfEntitled(user) {
     if (!user) return false;
     if (accessGranted) return true;
+    if (!accessGranted) {
+      renderGate(gateEl, { type: "loading" });
+    }
     try {
-      const entitlement = await fetchActiveEntitlement(db, user.uid);
+      let entitlement = null;
+      try {
+        entitlement = await fetchActiveEntitlementViaApi(user);
+      } catch {
+        entitlement = await fetchActiveEntitlement(db, user.uid);
+      }
       if (!entitlement) {
         accessGranted = false;
         shellEl.hidden = true;
@@ -360,30 +413,13 @@ export async function runAccessGate() {
   async function checkSession() {
     await completeEmailLinkSignIn().catch(() => undefined);
     cleanEmailLinkFromUrl();
-    return new Promise((resolve) => {
-      let settled = false;
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (accessGranted) return;
-
-        if (user) {
-          void grantAccessIfEntitled(user).then((ok) => {
-            if (!settled) {
-              settled = true;
-              unsubscribe();
-              resolve(ok);
-            }
-          });
-          return;
-        }
-
-        if (!settled) {
-          settled = true;
-          unsubscribe();
-          showLogin();
-          resolve(false);
-        }
-      });
-    });
+    await auth.authStateReady();
+    const user = auth.currentUser;
+    if (user) {
+      return grantAccessIfEntitled(user);
+    }
+    showLogin();
+    return false;
   }
 
   return checkSession();

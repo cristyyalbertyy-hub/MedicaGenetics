@@ -4,6 +4,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/((?!styles\\.css|config\\.public\\.js|auth-gate\\.js|main\\.js|app\\.js|public/).*)", "destination": "/index.html" }
+    { "source": "/((?!styles\\.css|config\\.public\\.js|auth-gate\\.js|main\\.js|app\\.js|progress-client\\.js|public/).*)", "destination": "/index.html" }
   ]
 }
