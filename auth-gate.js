@@ -1,6 +1,7 @@
 import { initializeApp } from "https://esm.sh/firebase@12.15.0/app";
 import {
   getAuth,
+  onAuthStateChanged,
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
@@ -11,10 +12,6 @@ import {
 } from "https://esm.sh/firebase@12.15.0/auth";
 import {
   getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
   doc,
   getDoc,
 } from "https://esm.sh/firebase@12.15.0/firestore";
@@ -28,6 +25,25 @@ const ACCOUNT_URL =
 const SITE_ORIGIN = new URL(ACCOUNT_URL).origin;
 const EMAIL_FOR_SIGN_IN_KEY = "studio9.emailForSignIn";
 const APP_TITLE = config.appTitle || "Medical Genetics";
+const ENTITLEMENT_TIMEOUT_MS = 12_000;
+const AUTH_WAIT_TIMEOUT_MS = 12_000;
+
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(`${label}-timeout`)), ms);
+    }),
+  ]);
+}
+
+function parseActiveEntitlement(data) {
+  const expiresAt = new Date(data.expires_at);
+  if (Number.isNaN(expiresAt.getTime()) || expiresAt <= new Date()) {
+    return null;
+  }
+  return data;
+}
 
 function isConfigured() {
   return Boolean(
@@ -68,50 +84,58 @@ async function trySessionHandoff(auth) {
 }
 
 async function fetchActiveEntitlementViaApi(user) {
-  const idToken = await user.getIdToken();
-  const res = await fetch(`${SITE_ORIGIN}/api/my-entitlements`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id_token: idToken }),
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    throw new Error(
-      typeof data.error === "string" ? data.error : "Erro ao verificar acesso.",
-    );
+  const idToken = await withTimeout(user.getIdToken(), 8_000, "getIdToken");
+  const controller = new AbortController();
+  const abortTimer = setTimeout(() => controller.abort(), ENTITLEMENT_TIMEOUT_MS);
+  try {
+    const res = await fetch(`${SITE_ORIGIN}/api/my-entitlements`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id_token: idToken }),
+      signal: controller.signal,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(
+        typeof data.error === "string" ? data.error : "Erro ao verificar acesso.",
+      );
+    }
+    if ((data.package_ids ?? []).includes(PACKAGE_ID)) {
+      return { package_id: PACKAGE_ID, user_id: user.uid };
+    }
+    return null;
+  } finally {
+    clearTimeout(abortTimer);
   }
-  if ((data.package_ids ?? []).includes(PACKAGE_ID)) {
-    return { package_id: PACKAGE_ID, user_id: user.uid };
-  }
-  return null;
 }
 
-async function fetchActiveEntitlement(db, userId) {
+async function fetchActiveEntitlementFromFirestore(db, userId) {
   const directRef = doc(db, "entitlements", `${userId}_${PACKAGE_ID}`);
   const directSnap = await getDoc(directRef);
-  if (directSnap.exists()) {
-    const data = directSnap.data();
-    const expiresAt = new Date(data.expires_at);
-    if (!Number.isNaN(expiresAt.getTime()) && expiresAt > new Date()) {
-      return data;
+  if (!directSnap.exists()) return null;
+  return parseActiveEntitlement(directSnap.data());
+}
+
+async function resolveEntitlement(user, db) {
+  const results = await Promise.allSettled([
+    withTimeout(
+      fetchActiveEntitlementFromFirestore(db, user.uid),
+      ENTITLEMENT_TIMEOUT_MS,
+      "firestore",
+    ),
+    withTimeout(
+      fetchActiveEntitlementViaApi(user),
+      ENTITLEMENT_TIMEOUT_MS,
+      "api",
+    ),
+  ]);
+
+  for (const result of results) {
+    if (result.status === "fulfilled" && result.value) {
+      return result.value;
     }
   }
-
-  const q = query(
-    collection(db, "entitlements"),
-    where("user_id", "==", userId),
-    where("package_id", "==", PACKAGE_ID),
-  );
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) return null;
-
-  const data = snapshot.docs[0].data();
-  const expiresAt = new Date(data.expires_at);
-  if (Number.isNaN(expiresAt.getTime()) || expiresAt <= new Date()) {
-    return null;
-  }
-
-  return data;
+  return null;
 }
 
 /** @type {{ auth: import('firebase/auth').Auth, db: import('firebase/firestore').Firestore, user: import('firebase/auth').User, packageId: string, progressUrl: string } | null} */
@@ -175,6 +199,19 @@ function renderGate(root, view) {
     return;
   }
 
+  if (view.type === "check-error") {
+    card.innerHTML =
+      `<h1>${escapeHtml(APP_TITLE)}</h1>` +
+      `<p class="form-error">${escapeHtml(view.message)}</p>` +
+      `<div class="auth-actions">` +
+      `<button type="button" class="btn btn-secondary" data-action="refresh">Tentar novamente</button>` +
+      `<a class="btn btn-primary" href="${escapeHtml(ACCOUNT_URL)}">Abrir pela Minha conta</a>` +
+      `</div>`;
+    card.querySelector('[data-action="refresh"]')?.addEventListener("click", view.onRefresh);
+    root.appendChild(card);
+    return;
+  }
+
   if (view.type === "no-access") {
     card.innerHTML =
       `<h1>${escapeHtml(APP_TITLE)}</h1>` +
@@ -230,8 +267,8 @@ export async function runAccessGate() {
     appId: config.firebaseAppId,
   });
   const auth = getAuth(app);
-  const db = getFirestore(app);
   await setPersistence(auth, browserLocalPersistence);
+  const db = getFirestore(app);
 
   if (hasHandoff) {
     try {
@@ -305,16 +342,9 @@ export async function runAccessGate() {
   async function grantAccessIfEntitled(user) {
     if (!user) return false;
     if (accessGranted) return true;
-    if (!accessGranted) {
-      renderGate(gateEl, { type: "loading" });
-    }
+    renderGate(gateEl, { type: "loading" });
     try {
-      let entitlement = null;
-      try {
-        entitlement = await fetchActiveEntitlementViaApi(user);
-      } catch {
-        entitlement = await fetchActiveEntitlement(db, user.uid);
-      }
+      const entitlement = await resolveEntitlement(user, db);
       if (!entitlement) {
         accessGranted = false;
         shellEl.hidden = true;
@@ -331,17 +361,17 @@ export async function runAccessGate() {
       }
       revealApp(user);
       return true;
-    } catch {
+    } catch (error) {
       accessGranted = false;
       shellEl.hidden = true;
+      const timedOut =
+        error instanceof Error && error.message.includes("timeout");
       renderGate(gateEl, {
-        type: "no-access",
-        email: user.email || "",
+        type: "check-error",
+        message: timedOut
+          ? "A verificação demorou demasiado. Tente novamente ou abra pela Minha conta."
+          : "Não foi possível confirmar o acesso. Tente novamente.",
         onRefresh: () => void refreshEntitlementCheck(),
-        onLogout: () =>
-          void signOut(auth).then(() => {
-            window.location.assign(ACCOUNT_URL);
-          }),
       });
       return false;
     }
@@ -410,11 +440,32 @@ export async function runAccessGate() {
     cleanEmailLinkFromUrl();
   }
 
+  async function waitForSignedInUser() {
+    if (auth.currentUser) return auth.currentUser;
+    return withTimeout(
+      new Promise((resolve) => {
+        const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
+          unsubscribe();
+          resolve(nextUser);
+        });
+      }),
+      AUTH_WAIT_TIMEOUT_MS,
+      "auth-wait",
+    ).catch(() => auth.currentUser);
+  }
+
   async function checkSession() {
     await completeEmailLinkSignIn().catch(() => undefined);
     cleanEmailLinkFromUrl();
-    await auth.authStateReady();
-    const user = auth.currentUser;
+
+    if (hasHandoff) {
+      const handoffUser = auth.currentUser;
+      if (handoffUser) return grantAccessIfEntitled(handoffUser);
+      showLogin();
+      return false;
+    }
+
+    const user = await waitForSignedInUser();
     if (user) {
       return grantAccessIfEntitled(user);
     }
