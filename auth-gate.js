@@ -12,6 +12,10 @@ import {
 } from "https://esm.sh/firebase@12.15.0/auth";
 import {
   getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
   doc,
   getDoc,
 } from "https://esm.sh/firebase@12.15.0/firestore";
@@ -22,11 +26,10 @@ const STORE_URL =
   config.storeUrl || "https://studio9medical.com/precos/";
 const ACCOUNT_URL =
   config.accountUrl || "https://studio9medical.com/conta/";
-const SITE_ORIGIN = new URL(ACCOUNT_URL).origin;
 const EMAIL_FOR_SIGN_IN_KEY = "studio9.emailForSignIn";
 const APP_TITLE = config.appTitle || "Medical Genetics";
 const ENTITLEMENT_TIMEOUT_MS = 12_000;
-const AUTH_WAIT_TIMEOUT_MS = 12_000;
+const GATE_TIMEOUT_MS = 20_000;
 
 function withTimeout(promise, ms, label) {
   return Promise.race([
@@ -72,7 +75,7 @@ async function trySessionHandoff(auth) {
   const params = new URLSearchParams(window.location.search);
   const token = params.get("studio9_handoff");
   if (!token) return;
-  await signOut(auth).catch(() => undefined);
+  sessionStorage.setItem("studio9_from_conta", "1");
   await signInWithCustomToken(auth, token);
   params.delete("studio9_handoff");
   const rest = params.toString();
@@ -83,85 +86,29 @@ async function trySessionHandoff(auth) {
   );
 }
 
-async function fetchActiveEntitlementViaApi(user) {
-  const idToken = await withTimeout(user.getIdToken(), 8_000, "getIdToken");
-  const controller = new AbortController();
-  const abortTimer = setTimeout(() => controller.abort(), ENTITLEMENT_TIMEOUT_MS);
-  try {
-    const res = await fetch(`${SITE_ORIGIN}/api/my-entitlements`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id_token: idToken }),
-      signal: controller.signal,
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      throw new Error(
-        typeof data.error === "string" ? data.error : "Erro ao verificar acesso.",
-      );
-    }
-    if ((data.package_ids ?? []).includes(PACKAGE_ID)) {
-      return { package_id: PACKAGE_ID, user_id: user.uid };
-    }
-    return null;
-  } finally {
-    clearTimeout(abortTimer);
-  }
-}
-
-async function fetchActiveEntitlementFromFirestore(db, userId) {
-  const directRef = doc(db, "entitlements", `${userId}_${PACKAGE_ID}`);
-  const directSnap = await getDoc(directRef);
-  if (!directSnap.exists()) return null;
-  return parseActiveEntitlement(directSnap.data());
-}
-
-async function resolveEntitlementFromHandoffClaims(user) {
-  await withTimeout(user.getIdToken(true), 8_000, "getIdToken");
-  const tokenResult = await withTimeout(user.getIdTokenResult(), 4_000, "getIdTokenResult");
-  const packages = tokenResult.claims?.studio9_packages;
-  if (Array.isArray(packages) && packages.includes(PACKAGE_ID)) {
-    return { package_id: PACKAGE_ID, user_id: user.uid };
-  }
-  return null;
-}
-
-async function resolveEntitlement(user, db, preferHandoffClaims = false) {
-  if (preferHandoffClaims) {
-    try {
-      const fromClaims = await withTimeout(
-        resolveEntitlementFromHandoffClaims(user),
-        10_000,
-        "handoff-claims",
-      );
-      if (fromClaims) return fromClaims;
-    } catch {
-      /* fall through to shared checks */
-    }
+/** Same entitlement lookup pattern as Medical Biology. */
+async function fetchActiveEntitlement(db, userId) {
+  const directSnap = await getDoc(
+    doc(db, "entitlements", `${userId}_${PACKAGE_ID}`),
+  );
+  if (directSnap.exists()) {
+    const active = parseActiveEntitlement(directSnap.data());
+    if (active) return active;
   }
 
-  const results = await Promise.allSettled([
-    withTimeout(
-      fetchActiveEntitlementFromFirestore(db, user.uid),
-      ENTITLEMENT_TIMEOUT_MS,
-      "firestore",
+  const snapshot = await getDocs(
+    query(
+      collection(db, "entitlements"),
+      where("user_id", "==", userId),
+      where("package_id", "==", PACKAGE_ID),
     ),
-    withTimeout(
-      fetchActiveEntitlementViaApi(user),
-      ENTITLEMENT_TIMEOUT_MS,
-      "api",
-    ),
-  ]);
+  );
+  if (snapshot.empty) return null;
 
-  for (const result of results) {
-    if (result.status === "fulfilled" && result.value) {
-      return result.value;
-    }
-  }
-  return null;
+  return parseActiveEntitlement(snapshot.docs[0].data());
 }
 
-/** @type {{ auth: import('firebase/auth').Auth, db: import('firebase/firestore').Firestore, user: import('firebase/auth').User, packageId: string, progressUrl: string } | null} */
+/** @type {{ auth: import('firebase/auth').Auth, db: import('firebase/firestore').Firestore, user: import('firebase/auth').User, packageId: string } | null} */
 let studio9Session = null;
 /** @type {boolean} */
 let accessGranted = false;
@@ -290,27 +237,51 @@ export async function runAccessGate() {
     appId: config.firebaseAppId,
   });
   const auth = getAuth(app);
-  await setPersistence(auth, browserLocalPersistence);
   const db = getFirestore(app);
 
-  if (hasHandoff) {
+  let loginState = { error: null, submitting: false, sent: false, email: "" };
+  let handoffFailed = false;
+
+  async function bootstrap() {
     try {
-      await trySessionHandoff(auth);
+      await withTimeout(
+        setPersistence(auth, browserLocalPersistence),
+        10_000,
+        "persistence",
+      );
+
+      if (hasHandoff) {
+        await withTimeout(trySessionHandoff(auth), 15_000, "handoff");
+      }
+
+      if (isSignInWithEmailLink(auth, window.location.href)) {
+        let email = window.localStorage.getItem(EMAIL_FOR_SIGN_IN_KEY);
+        if (!email) {
+          email = window.prompt("Confirme o email usado para pedir o link de acesso");
+        }
+        if (email) {
+          await signInWithEmailLink(auth, email, window.location.href);
+          window.localStorage.removeItem(EMAIL_FOR_SIGN_IN_KEY);
+          cleanEmailLinkFromUrl();
+        }
+      }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Não foi possível iniciar sessão.";
-      renderGate(gateEl, {
-        type: "handoff-error",
-        message:
-          message.includes("custom-token") || message.includes("expired")
-            ? "A ligação expirou. Volte a abrir o Genetics pela Minha conta."
-            : message,
-      });
-      return false;
+      if (hasHandoff) {
+        handoffFailed = true;
+        const message =
+          error instanceof Error ? error.message : "Não foi possível iniciar sessão.";
+        renderGate(gateEl, {
+          type: "handoff-error",
+          message:
+            message.includes("timeout") ||
+            message.includes("custom-token") ||
+            message.includes("expired")
+              ? "A ligação expirou. Volte a abrir o Genetics pela Minha conta."
+              : message,
+        });
+      }
     }
   }
-
-  let loginState = { error: null, submitting: false, sent: false, email: "" };
 
   function addAccountBar(email) {
     const header = document.getElementById("app-header");
@@ -324,6 +295,7 @@ export async function runAccessGate() {
     wrap.querySelector("button")?.addEventListener("click", () => {
       studio9Session = null;
       accessGranted = false;
+      sessionStorage.removeItem("studio9_from_conta");
       void signOut(auth).then(() => {
         window.location.assign(ACCOUNT_URL);
       });
@@ -362,12 +334,16 @@ export async function runAccessGate() {
     await grantAccessIfEntitled(currentUser);
   }
 
-  async function grantAccessIfEntitled(user, preferHandoffClaims = false) {
+  async function grantAccessIfEntitled(user) {
     if (!user) return false;
     if (accessGranted) return true;
     renderGate(gateEl, { type: "loading" });
     try {
-      const entitlement = await resolveEntitlement(user, db, preferHandoffClaims);
+      const entitlement = await withTimeout(
+        fetchActiveEntitlement(db, user.uid),
+        ENTITLEMENT_TIMEOUT_MS,
+        "entitlement",
+      );
       if (!entitlement) {
         accessGranted = false;
         shellEl.hidden = true;
@@ -382,6 +358,7 @@ export async function runAccessGate() {
         });
         return false;
       }
+      sessionStorage.removeItem("studio9_from_conta");
       revealApp(user);
       return true;
     } catch (error) {
@@ -451,50 +428,45 @@ export async function runAccessGate() {
     });
   }
 
-  async function completeEmailLinkSignIn() {
-    if (!isSignInWithEmailLink(auth, window.location.href)) return;
-    let email = window.localStorage.getItem(EMAIL_FOR_SIGN_IN_KEY);
-    if (!email) {
-      email = window.prompt("Confirme o email usado para pedir o link de acesso");
-    }
-    if (!email) return;
-    await signInWithEmailLink(auth, email, window.location.href);
-    window.localStorage.removeItem(EMAIL_FOR_SIGN_IN_KEY);
-    cleanEmailLinkFromUrl();
-  }
+  void bootstrap();
 
-  async function waitForSignedInUser() {
-    if (auth.currentUser) return auth.currentUser;
-    return withTimeout(
-      new Promise((resolve) => {
-        const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
+  return new Promise((resolve) => {
+    let settled = false;
+
+    const gateTimer = setTimeout(() => {
+      if (settled || accessGranted || handoffFailed) return;
+      settled = true;
+      unsubscribe();
+      renderGate(gateEl, {
+        type: "check-error",
+        message:
+          "A verificação demorou demasiado. Tente novamente ou abra pela Minha conta.",
+        onRefresh: () => window.location.reload(),
+      });
+      resolve(false);
+    }, GATE_TIMEOUT_MS);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (accessGranted || settled || handoffFailed) return;
+
+      if (user) {
+        void grantAccessIfEntitled(user).then((ok) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(gateTimer);
           unsubscribe();
-          resolve(nextUser);
+          resolve(ok);
         });
-      }),
-      AUTH_WAIT_TIMEOUT_MS,
-      "auth-wait",
-    ).catch(() => auth.currentUser);
-  }
+        return;
+      }
 
-  async function checkSession() {
-    await completeEmailLinkSignIn().catch(() => undefined);
-    cleanEmailLinkFromUrl();
-
-    if (hasHandoff) {
-      const handoffUser = auth.currentUser;
-      if (handoffUser) return grantAccessIfEntitled(handoffUser, true);
-      showLogin();
-      return false;
-    }
-
-    const user = await waitForSignedInUser();
-    if (user) {
-      return grantAccessIfEntitled(user);
-    }
-    showLogin();
-    return false;
-  }
-
-  return checkSession();
+      if (!hasHandoff) {
+        settled = true;
+        clearTimeout(gateTimer);
+        unsubscribe();
+        showLogin();
+        resolve(false);
+      }
+    });
+  });
 }
