@@ -4,6 +4,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/((?!styles\\.css|config\\.public\\.js|bundle\\.js|public/).*)", "destination": "/index.html" }
+    { "source": "/((?!styles\\.css|config\\.public\\.js|bundle\\.js|favicon\\.svg|public/).*)", "destination": "/index.html" }
   ]
 }
