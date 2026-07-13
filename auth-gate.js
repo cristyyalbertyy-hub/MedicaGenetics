@@ -209,6 +209,11 @@ export async function runAccessGate() {
 
   const params = new URLSearchParams(window.location.search);
   const handoffToken = params.get("studio9_handoff");
+  const launchEmail = params.get("studio9_email")?.trim() || "";
+  if (launchEmail) {
+    sessionStorage.setItem("studio9.displayEmail", launchEmail);
+    sessionStorage.setItem("studio9_from_conta", "1");
+  }
   const hasHandoff = Boolean(handoffToken);
   renderGate(gateEl, { type: "loading" });
 
@@ -241,6 +246,7 @@ export async function runAccessGate() {
       accessGranted = false;
       sessionStorage.removeItem("studio9_from_conta");
       sessionStorage.removeItem("studio9_open_package");
+      sessionStorage.removeItem("studio9.displayEmail");
       void signOut(auth).then(() => {
         window.location.assign(ACCOUNT_URL);
       });
@@ -263,7 +269,12 @@ export async function runAccessGate() {
       user,
       packageId: PACKAGE_ID,
     };
-    addAccountBar(user.email || "");
+    addAccountBar(
+      user.email ||
+        sessionStorage.getItem("studio9.displayEmail") ||
+        launchEmail ||
+        "",
+    );
   }
 
   if (hasHandoff) {
@@ -274,6 +285,7 @@ export async function runAccessGate() {
         "handoff",
       );
       params.delete("studio9_handoff");
+      params.delete("studio9_email");
       params.delete("studio9_open");
       const rest = params.toString();
       window.history.replaceState(
