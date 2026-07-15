@@ -66,7 +66,7 @@ const RESOURCE_EXTENSIONS = [
 ];
 
 const state = {
-  expanded: { BG: true, IM: false, CA: false },
+  expanded: Object.fromEntries(curriculum.map((chapter) => [chapter.id, false])),
   chapterId: null,
   subchapterId: null,
   resourceId: null,
