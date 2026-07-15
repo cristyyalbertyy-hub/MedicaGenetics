@@ -580,7 +580,7 @@ function selectSubchapter(chapterId, subchapterId) {
   state.atHome = false;
   state.chapterId = chapterId;
   state.subchapterId = subchapterId;
-  state.resourceId = null;
+  state.resourceId = "V";
   state.expanded[chapterId] = true;
   contentPanelEl.setAttribute("data-tint", chapterId);
   closeMobileMenu();
@@ -588,7 +588,7 @@ function selectSubchapter(chapterId, subchapterId) {
   resourceNavEl.hidden = false;
   renderTree();
   updateResourceButtons();
-  setPlaceholder("Choose Video, Podcast, Infographic, or Questions.");
+  void loadSelectedResource();
   updateMobileBar();
 }
 
