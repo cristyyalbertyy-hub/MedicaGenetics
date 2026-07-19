@@ -6,10 +6,10 @@ function env(name, fallback = "") {
 }
 
 const cfg = {
-  firebaseApiKey: env("VITE_FIREBASE_API_KEY"),
-  firebaseAuthDomain: env("VITE_FIREBASE_AUTH_DOMAIN"),
-  firebaseProjectId: env("VITE_FIREBASE_PROJECT_ID"),
-  firebaseAppId: env("VITE_FIREBASE_APP_ID"),
+  firebaseApiKey: env("VITE_FIREBASE_API_KEY", "AIzaSyBq-jO-0acTpRr0DESA27CKvNMCzEHESlc"),
+  firebaseAuthDomain: env("VITE_FIREBASE_AUTH_DOMAIN", "studio9-medical.firebaseapp.com"),
+  firebaseProjectId: env("VITE_FIREBASE_PROJECT_ID", "studio9-medical"),
+  firebaseAppId: env("VITE_FIREBASE_APP_ID", "1:872255591899:web:f21955ad7e22bc42af83fe"),
   packageId: env("VITE_PACKAGE_ID", "genetics"),
   appTitle: env("VITE_APP_TITLE", "Medical Genetics"),
   storeUrl: env("VITE_STORE_URL", "https://studio9medical.com/precos/"),
