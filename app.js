@@ -1,7 +1,8 @@
 import { getStudio9Session } from "./auth-gate.js";
 import { recordWatchComplete, recordProgress, progressDocId } from "./progress-client.js";
+import { publicAssetUrl } from "./paths.js";
 
-const OVERVIEW_IMAGE = "public/GeneticsA.png";
+const OVERVIEW_IMAGE = publicAssetUrl("public/GeneticsA.png");
 
 /** Optional HTML shown below the infographic image for a sub-topic. */
 const INFOGRAPHIC_EXTRAS = {
@@ -157,7 +158,9 @@ function attachPlaybackProgress(element, onComplete) {
     if (tracked) return;
     const duration = element.duration;
     if (!Number.isFinite(duration) || duration <= 0) return;
-    if (element.currentTime >= Math.max(0, duration - 0.75)) {
+    const threshold =
+      duration <= 40 ? Math.max(0, duration - 0.75) : Math.max(0, duration - 25);
+    if (element.currentTime >= threshold) {
       completeOnce();
     }
   };
@@ -166,6 +169,10 @@ function attachPlaybackProgress(element, onComplete) {
   element.addEventListener("seeking", reset);
   element.addEventListener("ended", completeOnce);
   element.addEventListener("timeupdate", maybeNearEnd);
+  element.addEventListener("loadedmetadata", maybeNearEnd);
+  element.addEventListener("durationchange", maybeNearEnd);
+
+  maybeNearEnd();
 }
 
 function clearQuizKeyboardHandler() {
@@ -211,7 +218,7 @@ async function resolveResourceUrl(chapterId, subchapterId, resourceId) {
 
   for (const base of bases) {
     for (const ext of RESOURCE_EXTENSIONS) {
-      const candidate = `public/${base}.${ext}`;
+      const candidate = publicAssetUrl(`public/${base}.${ext}`);
       if (await resourceExists(candidate)) return candidate;
     }
   }
@@ -547,7 +554,7 @@ async function loadSelectedResource() {
 
   if (state.resourceId === "I") {
     const extra = INFOGRAPHIC_EXTRAS[`${state.chapterId}/${state.subchapterId}`] ?? null;
-    loadInfographicViewer(url, extra);
+    loadInfographicViewer(url, extra ? publicAssetUrl(extra) : null);
     return;
   }
 
@@ -657,6 +664,9 @@ function buildResourceNav() {
 }
 
 function init() {
+  const homeImg = document.querySelector("#homeBtn img");
+  if (homeImg) homeImg.src = OVERVIEW_IMAGE;
+
   buildResourceNav();
   renderTree();
   renderHome();

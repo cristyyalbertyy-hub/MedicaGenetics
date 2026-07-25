@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/write-config.cjs && node scripts/build.mjs"
+    "build": "node scripts/build-dist.mjs"
   },
   "dependencies": {
     "firebase": "^12.15.0"
